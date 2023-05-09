@@ -1,4 +1,4 @@
-# Cache and logs (Symfony2)
+ # Cache and logs (Symfony2)
 /app/cache/*
 /app/logs/*
 !app/cache/.gitkeep
@@ -259,3 +259,6 @@ Temporary Items
 /web/js/
 
 # End of https://www.toptal.com/developers/gitignore/api/symfony,intellij,macos
+
+
+/.docker

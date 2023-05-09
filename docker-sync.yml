@@ -1,0 +1,14 @@
+version: "2"
+
+options:
+    compose-file-path: 'docker-compose.yml'
+    verbose: false
+    cli_mode: 'auto'
+    max_attempt: 5
+    project_root: 'pwd'
+
+syncs:
+    lpa-sf6-files:
+        notify_terminal: true
+        src: './'
+        sync_excludes: ['.git', '.idea', 'node_modules', 'var/cache', '.idea', '.docker-sync']
