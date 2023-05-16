@@ -37,6 +37,10 @@ class Deal
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'deals')]
     private Collection $groups;
 
+    #[ORM\ManyToOne(inversedBy: 'deals')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
@@ -142,6 +146,18 @@ class Deal
         if ($this->groups->removeElement($group)) {
             $group->removeDeal($this);
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

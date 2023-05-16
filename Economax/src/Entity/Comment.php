@@ -19,13 +19,9 @@ class Comment
     #[ORM\Column(type: Types::TEXT)]
     private ?string $text = null;
 
-    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: User::class)]
-    private Collection $customer;
-
-    public function __construct()
-    {
-        $this->customer = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'comment')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -44,32 +40,14 @@ class Comment
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getCustomer(): Collection
+    public function getUser(): ?User
     {
-        return $this->customer;
+        return $this->user;
     }
 
-    public function addCustomer(User $customer): self
+    public function setUser(?User $user): self
     {
-        if (!$this->customer->contains($customer)) {
-            $this->customer->add($customer);
-            $customer->setComment($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCustomer(User $customer): self
-    {
-        if ($this->customer->removeElement($customer)) {
-            // set the owning side to null (unless already changed)
-            if ($customer->getComment() === $this) {
-                $customer->setComment(null);
-            }
-        }
+        $this->user = $user;
 
         return $this;
     }
