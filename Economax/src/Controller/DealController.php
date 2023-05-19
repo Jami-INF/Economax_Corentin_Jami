@@ -34,6 +34,21 @@ class DealController extends AbstractController
         return $this->render('deal/index.html.twig');
     }
 
+    #[Route('/deal/list/{type}', name: 'app_deal_list')]
+    public function list(String $type): Response
+    {
+        if($type == 'deal'){
+            $deals = $this->advertRepository->findAll();
+        } else {
+            $deals = $this->promoCodeRepository->findAll();
+        }
+
+        return $this->render('deal/list.html.twig', [
+            'deals' => $deals,
+            'type' => $type
+        ]);
+    }
+
     #[Route('/deal/create/{type}', name: 'app_deal_create')]
     public function create(String $type, Request $request): Response
     {
