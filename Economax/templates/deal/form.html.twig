@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deal{% endblock %}
+
+{% block body %}
+    <div class="card-body">
+        {{ form_start(form) }}
+        {{ form_rest(form) }}
+        <button type="submit" class="btn btn-success btn-sm text-white">
+            <i class="icon cil-send"></i> Poster
+        </button>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

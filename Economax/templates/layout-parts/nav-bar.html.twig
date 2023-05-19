@@ -13,7 +13,7 @@
                 <a class="nav-link" href="#">Codes promo</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Poster un deal</a>
+               
             </li>
 
             <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
@@ -24,6 +24,8 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                         {% if app.user %}
+                            <li><a class="dropdown-item" href="{{ path("app_deal") }}">Poster un deal</a></li>
+                            <li><a class="dropdown-item" href="{{ path("app_group") }}">Créer un groupe</a></li>
                             <li><a class="dropdown-item" href="{{ path("app_logout") }}">Déconnexion</a></li>
                         {% else %}
                             <li><a class="dropdown-item" href="{{ path("app_login") }}">Connexion</a></li>

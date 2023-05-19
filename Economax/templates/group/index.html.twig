@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GroupController!{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div>
+            <a class="btn btn-success" href="{{ path("app_group_create") }}">Créer un groupe</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Groupes</th>
+                </tr>
+            </thead>
+            <tr>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+            {% for group in groups %}
+                <tr>
+                    <td>{{ group.name }}</td>
+                    <td>
+                        <a class="btn btn-danger" href="{{ path("app_group_delete", {id: group.id}) }}">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
