@@ -48,6 +48,7 @@ class DealController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
+            $deal->setTemperature(0);
             $deal->setUser($this->security->getUser());
             if($type == 'deal'){
                 $this->advertRepository->save($deal);

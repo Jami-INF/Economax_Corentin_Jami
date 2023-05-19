@@ -12,7 +12,6 @@ class AdvertType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('temperature')
             ->add('link')
             ->add('promoCode')
             ->add('title')
