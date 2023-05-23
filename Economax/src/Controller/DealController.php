@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\DealRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,17 +22,27 @@ class DealController extends AbstractController
     public function __construct(
         protected AdvertRepository $advertRepository,
         protected PromoCodeRepository $promoCodeRepository,
+        protected DealRepository $dealRepository,
         Security $security
     )
     {
         $this->security = $security;
     }
 
-
-    #[Route('/deal', name: 'app_deal')]
+    #[Route('/', name: 'app_home')]
     public function index(): Response
     {
-        return $this->render('deal/index.html.twig');
+        $deals = $this->dealRepository->findAll();
+
+        return $this->render('deal/index.html.twig', [
+            'deals' => $deals,
+        ]);
+    }
+
+    #[Route('/deal', name: 'app_deal')]
+    public function modal(): Response
+    {
+        return $this->render('deal/modal.html.twig');
     }
 
     #[Route('/deal/list/{type}', name: 'app_deal_list')]
