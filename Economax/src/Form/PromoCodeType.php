@@ -2,8 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Group;
 use App\Entity\PromoCode;
 use App\Enum\TypeReducEnum;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,10 +25,11 @@ class PromoCodeType extends AbstractType
                 'class' => TypeReducEnum::class,
                 'choice_label' => 'getLabel',
             ])
-            ->add('groups', null, [
+            ->add('groups', EntityType::class, [
+                'class' => Group::class,
                 'choice_label' => 'name',
                 'expanded' => true,
-                'multiple' => true,
+                'multiple' => false,
             ])
         ;
     }

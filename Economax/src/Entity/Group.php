@@ -19,7 +19,7 @@ class Group
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Deal::class, inversedBy: 'groups')]
+    #[ORM\OneToMany(mappedBy: 'groups', targetEntity: Deal::class)]
     private Collection $deals;
 
     public function __construct()
@@ -60,6 +60,7 @@ class Group
     {
         if (!$this->deals->contains($deal)) {
             $this->deals->add($deal);
+            $deal->setGroups($this);
         }
 
         return $this;
@@ -67,8 +68,14 @@ class Group
 
     public function removeDeal(Deal $deal): self
     {
-        $this->deals->removeElement($deal);
+        if ($this->deals->removeElement($deal)) {
+            // set the owning side to null (unless already changed)
+            if ($deal->getGroups() === $this) {
+                $deal->setGroups(null);
+            }
+        }
 
         return $this;
     }
+
 }

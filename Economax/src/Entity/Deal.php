@@ -40,17 +40,13 @@ class Deal
     #[ORM\Column]
     private ?bool $isExpired = null;
 
-    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'deals')]
-    private Collection $groups;
-
     #[ORM\ManyToOne(inversedBy: 'deals')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    public function __construct()
-    {
-        $this->groups = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'deals')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Group $groups = null;
 
     public function getId(): ?int
     {
@@ -129,33 +125,6 @@ class Deal
         return $this;
     }
 
-    /**
-     * @return Collection<int, Group>
-     */
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-
-    public function addGroup(Group $group): self
-    {
-        if (!$this->groups->contains($group)) {
-            $this->groups->add($group);
-            $group->addDeal($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGroup(Group $group): self
-    {
-        if ($this->groups->removeElement($group)) {
-            $group->removeDeal($this);
-        }
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -164,6 +133,18 @@ class Deal
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getGroups(): ?Group
+    {
+        return $this->groups;
+    }
+
+    public function setGroups(?Group $groups): self
+    {
+        $this->groups = $groups;
 
         return $this;
     }
