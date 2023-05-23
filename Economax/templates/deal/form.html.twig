@@ -1,15 +1,33 @@
 {% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
 
 {% block title %}Deal{% endblock %}
 
 {% block body %}
     <div class="card-body">
-        {{ form_start(form) }}
-        {{ form_rest(form) }}
-        <button type="submit" class="btn btn-success btn-sm text-white">
-            <i class="icon cil-send"></i> Poster
-        </button>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_start(form) }}
+                    {{ form_rest(form) }}
+                    <button type="submit" class="btn btn-success btn-sm text-white">
+                        <i class="icon cil-send"></i> Poster
+                    </button>                </div>
+                <div class="col-md-6">
+                    <h1>test</h1>
+                </div>
+            </div>
+        </div>
+
 
         {{ form_end(form) }}
     </div>
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+        {{ encore_entry_script_tags('form_add_deal') }}
+{% endblock %}
+
+

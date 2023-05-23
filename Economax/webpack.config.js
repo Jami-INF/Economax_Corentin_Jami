@@ -21,6 +21,7 @@ Encore
      * and one CSS file (e.g. app.scss) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
+    .addEntry('form_add_deal', './assets/js/FormAddDeal.js')
     Encore.enableSassLoader()
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
