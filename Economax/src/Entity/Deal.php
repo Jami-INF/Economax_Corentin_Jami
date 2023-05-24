@@ -114,6 +114,15 @@ class Deal
         return $this->description;
     }
 
+    /**
+     * getShortDescription() returns the first 400 characters of the description
+     * @return string|null
+     */
+    public function getShortDescription(): ?string
+    {
+        return substr($this->description, 0, 400) . '...';
+    }
+
     public function setDescription(?string $description): self
     {
         $this->description = $description;
