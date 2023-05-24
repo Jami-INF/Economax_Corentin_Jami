@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Deal;
+use App\Form\CommentType;
+use App\Repository\CommentRepository;
 use App\Repository\DealRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -24,6 +27,7 @@ class DealController extends AbstractController
         protected AdvertRepository $advertRepository,
         protected PromoCodeRepository $promoCodeRepository,
         protected DealRepository $dealRepository,
+        protected CommentRepository $commentRepository,
         Security $security
     )
     {
@@ -75,6 +79,10 @@ class DealController extends AbstractController
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
+            $user = $this->security->getUser();
+            if($user == null){
+                return $this->redirectToRoute('app_login');
+            }
             $deal->setTemperature(0);
             $deal->setUser($this->security->getUser());
             if($type == 'deal'){
@@ -92,10 +100,28 @@ class DealController extends AbstractController
     }
 
     #[Route('/deal/info/{id}', name: 'app_deal_info')]
-    public function info(?Deal $deal): Response
+    public function info(Request $request,?Deal $deal): Response
     {
+        $comments = new Comment();
+
+        $form = $this->createForm(CommentType::class, $comments);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $user = $this->security->getUser();
+            if($user == null){
+                return $this->redirectToRoute('app_login');
+            }
+            $comments->setUser($this->security->getUser());
+            $comments->setDeal($deal);
+            $this->commentRepository->save($comments);
+
+            return $this->redirectToRoute('app_deal_info', ['id' => $deal->getId()]);
+        }
+
         return $this->render('deal/info.html.twig', [
             'deal' => $deal,
+            'form' => $form
         ]);
     }
+
 }

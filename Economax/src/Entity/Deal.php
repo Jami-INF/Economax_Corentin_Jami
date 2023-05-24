@@ -48,6 +48,14 @@ class Deal
     #[ORM\JoinColumn(nullable: false)]
     private ?Group $groups = null;
 
+    #[ORM\OneToMany(mappedBy: 'deal', targetEntity: Comment::class)]
+    private Collection $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -145,6 +153,36 @@ class Deal
     public function setGroups(?Group $groups): self
     {
         $this->groups = $groups;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setDeal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getDeal() === $this) {
+                $comment->setDeal(null);
+            }
+        }
 
         return $this;
     }

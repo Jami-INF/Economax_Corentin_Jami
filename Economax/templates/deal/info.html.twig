@@ -17,6 +17,23 @@
                 <p class="card-text">{{ deal.description }}</p>
             </div>
         </div>
+        <div>
+            <p>Comments</p>
+            <div>
+                {{ form_start(form) }}
+                {{ form_row(form.text) }}
+                {{ form_rest(form) }}
+                <button type="submit" class="btn btn-success btn-sm text-white">Poster</button>
+                {{ form_end(form) }}
+            </div>
+            {% for comment in deal.comments %}
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">{{ comment.text }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
 {% endblock %}
