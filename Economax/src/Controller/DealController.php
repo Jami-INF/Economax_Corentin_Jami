@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Deal;
 use App\Repository\DealRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -87,6 +88,14 @@ class DealController extends AbstractController
 
         return $this->render('deal/form.html.twig', [
             'form' => $form
+        ]);
+    }
+
+    #[Route('/deal/info/{id}', name: 'app_deal_info')]
+    public function info(?Deal $deal): Response
+    {
+        return $this->render('deal/info.html.twig', [
+            'deal' => $deal,
         ]);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use App\Enum\TypeReducEnum;
 use App\Repository\PromoCodeRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PromoCodeRepository::class)]
@@ -13,23 +15,19 @@ class PromoCode extends Deal
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $typeReduc = null;
+    #[ORM\Column(length: 50, enumType: TypeReducEnum::class)]
+    private ?TypeReducEnum $typeReduc = TypeReducEnum::PERCENT;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getTypeReduc(): ?string
+    public function getTypeReduc(): ?TypeReducEnum
     {
         return $this->typeReduc;
     }
 
-    public function setTypeReduc(string $typeReduc): self
+    public function setTypeReduc(TypeReducEnum $typeReduc): self
     {
         $this->typeReduc = $typeReduc;
 
         return $this;
     }
+
 }

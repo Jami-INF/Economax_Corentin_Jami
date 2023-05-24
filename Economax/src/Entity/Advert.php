@@ -22,11 +22,6 @@ class Advert extends Deal
     #[ORM\Column(nullable: true)]
     private ?float $shipping = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getPrice(): ?float
     {
         return $this->price;
