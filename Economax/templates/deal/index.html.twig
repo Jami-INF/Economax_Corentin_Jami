@@ -6,17 +6,7 @@
 
     <div class="container">
         {% for deal in deals %}
-            <div class="card">
-                <div class="card-body">
-                    <a href="{{ path('app_deal_info', {id: deal.id}) }}"> <h5 class="card-title">{{ deal.title }}</h5> </a>
-                    <div class="card-subtitle mb-2 text-muted">
-                        <a class="btn btn-primary" href="#">Moins</a>
-                        <span class="">{{ deal.temperature }}</span>
-                        <a class="btn btn-primary" href="#" >Plus</a>
-                    </div>
-                    <p class="card-text">{{ deal.description }}</p>
-                </div>
-            </div>
+            {% include 'layout-parts/deal-card.html.twig' %}
         {% endfor %}
     </div>
 

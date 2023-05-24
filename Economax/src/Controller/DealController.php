@@ -102,6 +102,7 @@ class DealController extends AbstractController
     #[Route('/deal/info/{id}', name: 'app_deal_info')]
     public function info(Request $request,?Deal $deal): Response
     {
+        
         $comments = new Comment();
 
         $form = $this->createForm(CommentType::class, $comments);

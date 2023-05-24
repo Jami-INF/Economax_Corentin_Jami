@@ -1,0 +1,18 @@
+
+<div class="card">
+    <div class="card-body">
+        <div class="">
+            <button class="btn btn-primary btn-sm" onclick="console.log('-')">-</button>
+            <span class="value">{{ deal.temperature }}</span>
+            <button class="btn btn-danger btn-sm" onclick="console.log('+')">+</button>
+            <span><i class="bi bi-clock"></i> Le 12 Mai 2023 a 16h46 <i class="bi bi-hourglass-split"></i> Expire le 13 Mai 2023 a 16h46</span>
+        </div>
+        <div>
+            <a class="text-decoration-none text-black" href="{{ path('app_deal_info', {id: deal.id}) }}">
+                <h4 class="card-title">{{ deal.title }}</h4>
+                <p class="card-text">{{ deal.description }}</p>
+            </a>
+        </div>
+
+    </div>
+</div>
