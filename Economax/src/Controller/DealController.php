@@ -102,7 +102,6 @@ class DealController extends AbstractController
     #[Route('/deal/info/{id}', name: 'app_deal_info')]
     public function info(Request $request,?Deal $deal): Response
     {
-        
         $comments = new Comment();
 
         $form = $this->createForm(CommentType::class, $comments);
@@ -119,8 +118,12 @@ class DealController extends AbstractController
             return $this->redirectToRoute('app_deal_info', ['id' => $deal->getId()]);
         }
 
+        // all comments by date DESC
+        $allComment = $this->commentRepository->findBy(['deal' => $deal], ['createdAt' => 'DESC']);
+
         return $this->render('deal/info.html.twig', [
             'deal' => $deal,
+            'comments' => $allComment,
             'form' => $form
         ]);
     }
