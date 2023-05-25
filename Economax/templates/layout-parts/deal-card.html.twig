@@ -1,18 +1,24 @@
 
-<div class="card">
+<div class="card my-4">
     <div class="card-body">
-        <div class="">
+        <div class="my-3">
             <button class="btn btn-primary btn-sm" onclick="console.log('-')">-</button>
             <span class="value">{{ deal.temperature }}</span>
             <button class="btn btn-danger btn-sm" onclick="console.log('+')">+</button>
-            <span><i class="bi bi-clock"></i> Le 12 Mai 2023 a 16h46 <i class="bi bi-hourglass-split"></i> Expire le 13 Mai 2023 a 16h46</span>
+            <span class="float-end"><i class="bi bi-clock"></i> Le 12 Mai 2023 a 16h46 <i class="bi bi-hourglass-split"></i> Expire le 13 Mai 2023 a 16h46</span>
         </div>
-        <div>
+        <div class="my-3">
             <a class="text-decoration-none text-black" href="{{ path('app_deal_info', {id: deal.id}) }}">
                 <h4 class="card-title">{{ deal.title }}</h4>
-                <p class="card-text">{{ deal.getShortDescription() }}</p>
+                <p class="card-text mx-3 justify">{{ deal.getShortDescription() }}</p>
             </a>
         </div>
-
+        <div>
+            <span class="">Deal postée par {{ deal.user.username }}</span>
+            <a class="text-decoration-none text-black float-end" href="{{ path('app_deal_info', {id: deal.id}) }}">
+                <button class="btn btn-primary">{{ deal.comments|length }}  <i class="bi bi-chat-left-text"></i></button>
+                <button class="btn btn-primary">Voir le deal  <i class="bi bi-box-arrow-up-right"></i></button>
+            </a>
+        </div>
     </div>
 </div>
