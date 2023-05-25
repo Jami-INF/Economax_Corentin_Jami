@@ -26,13 +26,14 @@
                 <button type="submit" class="btn btn-success btn-sm text-white">Poster</button>
                 {{ form_end(form) }}
             </div>
-{#            {% for comment in deal.comments %}#}
-{#                <div class="card">#}
-{#                    <div class="card-body">#}
-{#                        <p class="card-text">{{ comment.text }}</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            {% endfor %}#}
+            {% for comment in comments %}
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">{{ comment.text }}</p>
+                        <p class="card-text">{{ comment.createdAt|date('d/m/Y') }}</p>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 
