@@ -10,7 +10,11 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ deal.title }} </h5>
 
-                    <h6 class="card-subtitle mb-2 text-muted">{{ deal.price }} €</h6>
+                    {% if type == 'deal' %}
+                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.price }} €</h6>
+                    {% elseif type == 'promo' %}
+                        <h6 class="card-subtitle mb-2 text-muted">Promo</h6>
+                    {% endif %}
 
                     <div class="container">
                         <div class="row">
