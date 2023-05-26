@@ -9,6 +9,7 @@ use App\Repository\CommentRepository;
 use App\Repository\DealRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Advert;
@@ -126,6 +127,24 @@ class DealController extends AbstractController
             'comments' => $allComment,
             'form' => $form
         ]);
+    }
+
+    #[Route('/deal/edit/{id}/temperature/increase', name: 'increase')]
+    public function addTemperature(Deal $deal): JsonResponse
+    {
+        $deal->setTemperature($deal->getTemperature() + 1);
+        $this->dealRepository->save($deal);
+
+        return new JsonResponse(['temperature' => $deal->getTemperature()]);
+    }
+
+    #[Route('/deal/edit/{id}/temperature/decrease', name: 'decrease')]
+    public function removeTemperature(Deal $deal): JsonResponse
+    {
+        $deal->setTemperature($deal->getTemperature() - 1);
+        $this->dealRepository->save($deal);
+
+        return new JsonResponse(['temperature' => $deal->getTemperature()]);
     }
 
 }
