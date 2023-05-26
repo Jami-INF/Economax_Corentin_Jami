@@ -16,7 +16,7 @@ $(document).ready(function() {
             url = "/deal/edit/" + dealId + "/temperature/decrease";
         $.ajax({
             url: url,
-            method: 'GET',
+            method: 'POST',
             success: function (data) {
                 $('#temp-' + dealId).text(data.temperature)
             }
