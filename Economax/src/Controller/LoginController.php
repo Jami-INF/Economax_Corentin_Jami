@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\Admin\User\UserPasswordType;
 use App\Form\SignUpType;
 use App\Repository\UserRepository;
+use App\Service\PasswordResetter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +21,8 @@ class LoginController extends AbstractController
 {
 
     public function __construct(
-        protected UserRepository $userRepository
+        protected UserRepository $userRepository,
+        protected PasswordResetter $passwordResetter
     )
     {
     }
@@ -66,4 +69,40 @@ class LoginController extends AbstractController
             "form" => $form,
         ]);
     }
+
+    #[Route(path: '/reset-password', name: 'app_reset_password')]
+    public function resetPassword(Request $request): Response
+    {
+        if ($request->isMethod('POST')) {
+            $token = $request->get('_csrf_token');
+            if ($this->isCsrfTokenValid('reset-password', $token)) {
+                $emailAddress = $request->get('_username');
+                $this->passwordResetter->resetPassword($emailAddress);
+                // Peu importe si l'email existe ou non, on envoie ce message pour ne pas donner d'info à l'user
+                $this->addFlash('success', 'Un email vous a été envoyé pour réinitialiser votre mot de passe.');
+
+                return $this->redirectToRoute('app_login');
+            }
+        }
+
+        return $this->render('login/reset_password.html.twig');
+    }
+
+    #[Route('/change-password/{token}', name: 'app_change_password')]
+    public function changePassword(User $user, Request $request): Response
+    {
+        $form = $this->createForm(UserPasswordType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->passwordResetter->changePassword($user->getToken(), $user->getPassword());
+            $this->addFlash('success', 'Votre mot de passe a bien été modifié.');
+
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('login/change_password.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
 }
