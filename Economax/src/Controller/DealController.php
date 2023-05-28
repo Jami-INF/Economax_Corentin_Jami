@@ -38,7 +38,17 @@ class DealController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(): Response
     {
-        $deals = $this->dealRepository->findAll();
+        $deals = $this->dealRepository->findAllByComment();
+
+        return $this->render('deal/index.html.twig', [
+            'deals' => $deals,
+        ]);
+    }
+
+    #[Route('/hot', name: 'app_deal_hot')]
+    public function hot(): Response
+    {
+        $deals = $this->dealRepository->findAllHot();
 
         return $this->render('deal/index.html.twig', [
             'deals' => $deals,
