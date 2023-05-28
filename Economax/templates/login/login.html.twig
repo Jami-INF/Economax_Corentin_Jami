@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card-group d-block d-md-flex row">
+                        <div class="card col-md-7 p-4 mb-0">
+                            <div class="card-body">
+                                <h1>Me connecter</h1>
+                                <p class="text-medium-emphasis">Connectez vous à votre compte</p>
+                                <form action="{{ path('app_login') }}" method="post">
+                                    <div class="input-group mb-3">
+                                        <input id="username" class="form-control" type="email" placeholder="Email" value="{{ last_username }}" name="_username">
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <input class="form-control" type="password" placeholder="Mot de passe" name="_password">
+                                    </div>
+                                    <div class="mb-2">
+                                        <a href="{{ path('app_signup') }}" class="px-1">Inscription</a>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <button class="btn btn-info px-4" type="submit">Me connecter</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="card col-md-5 text-white bg-info py-5">
+                            <div class="card-body">
+                                <div>
+                                    <h2>Mot de passe oublié ?</h2>
+                                    <p>Cliquez sur le bouton pour recevoir un courriel afin de définir un nouveau mot de passe.</p>
+                                    <a href="{{ path('app_reset_password') }}" class="btn btn-lg btn-outline-light mt-3" type="button">Envoyez-moi un courriel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
