@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\DealRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +15,8 @@ class GroupController extends AbstractController
 {
 
     public function __construct(
-        protected GroupRepository $groupRepository
+        protected GroupRepository $groupRepository,
+        protected DealRepository $dealRepository,
     )
     {
     }
@@ -26,6 +28,16 @@ class GroupController extends AbstractController
 
         return $this->render('group/index.html.twig', [
             'groups' => $allGroups,
+        ]);
+    }
+
+    #[Route('/group/{id}', name: 'app_group_show')]
+    public function show(?Group $group): Response
+    {
+        $deal = $this->dealRepository->findBy(['groups' => $group]);
+
+        return $this->render('group/show.html.twig', [
+            'deals' => $deal,
         ]);
     }
 

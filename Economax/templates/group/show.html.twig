@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Economax{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        {% for deal in deals %}
+            {% include 'layout-parts/deal-card.html.twig' %}
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('add_temp_deal') }}
+{% endblock %}

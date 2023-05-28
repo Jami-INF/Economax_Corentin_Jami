@@ -19,7 +19,9 @@
             </tr>
             {% for group in groups %}
                 <tr>
-                    <td>{{ group.name }}</td>
+                    <td>
+                        <a href="{{ path("app_group_show", {id: group.id}) }}">{{ group.name }}</a>
+                    </td>
                     <td>
                         <a class="btn btn-danger" href="{{ path("app_group_delete", {id: group.id}) }}">Supprimer</a>
                     </td>
