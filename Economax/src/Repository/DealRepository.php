@@ -38,4 +38,34 @@ class DealRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    // récupére les deals lister par nombre de commentaires décroissant
+    // en mettant en avant uniquement les deals de moins de 1 semaine.
+    public function findAllByComment() : array
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('d')
+            ->leftJoin('d.comments', 'c')
+            ->addSelect('COUNT(c) AS HIDDEN nbComments')
+            ->groupBy('d')
+            ->orderBy('nbComments', 'DESC')
+            ->where('d.createdAt > :date')
+            ->setParameter('date', new \DateTime('-1 week'))
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    // récupére les deals hot (plus de 100°), triés par date de publication décroissante.
+    public function findAllHot() : array
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('d')
+            ->where('d.temperature > :temperature')
+            ->setParameter('temperature', 100)
+            ->orderBy('d.createdAt', 'DESC')
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }
