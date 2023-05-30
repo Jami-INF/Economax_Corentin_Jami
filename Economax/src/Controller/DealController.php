@@ -55,12 +55,6 @@ class DealController extends AbstractController
         ]);
     }
 
-    #[Route('/deal', name: 'app_deal')]
-    public function modal(): Response
-    {
-        return $this->render('deal/modal.html.twig');
-    }
-
     #[Route('/deal/list/{type}', name: 'app_deal_list')]
     public function list(String $type): Response
     {
