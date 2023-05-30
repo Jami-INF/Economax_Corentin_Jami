@@ -15,6 +15,7 @@
                     <a class="btn btn-primary" href="#" >Plus</a>
                 </div>
                 <p class="card-text">{{ deal.description }}</p>
+                <a href="{{ path('app_deal_delete', {id: deal.id}) }}" class="btn btn-danger">Expirer</a>
             </div>
         </div>
         <div>

@@ -18,7 +18,6 @@ class AdvertType extends AbstractType
             ->add('promoCode')
             ->add('title')
             ->add('description')
-            ->add('isExpired')
             ->add('price')
             ->add('usualPrice')
             ->add('shipping')

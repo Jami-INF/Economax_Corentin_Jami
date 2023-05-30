@@ -96,7 +96,7 @@ class DealController extends AbstractController
                 $this->promoCodeRepository->save($deal);
             }
 
-            return $this->redirectToRoute('app_deal');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('deal/form.html.twig', [
@@ -149,6 +149,14 @@ class DealController extends AbstractController
         $this->dealRepository->save($deal);
 
         return new JsonResponse(['temperature' => $deal->getTemperature()]);
+    }
+
+    #[Route('/deal/delete/{id}', name: 'app_deal_delete')]
+    public function delete(?Deal $deal): Response
+    {
+        $this->dealRepository->remove($deal);
+
+        return $this->redirectToRoute('app_home');
     }
 
 }
