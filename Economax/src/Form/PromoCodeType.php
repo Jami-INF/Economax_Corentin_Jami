@@ -25,6 +25,14 @@ class PromoCodeType extends AbstractType
                 'class' => TypeReducEnum::class,
                 'choice_label' => 'getLabel',
             ])
+            ->add('value', null,
+                [
+                    'attr' => [
+                        'placeholder' => 'Valeur de la réduction',
+                    ],
+                    'label' => 'Valeur de la réduction',
+                ]
+            )
             ->add('groups', EntityType::class, [
                 'class' => Group::class,
                 'choice_label' => 'name',

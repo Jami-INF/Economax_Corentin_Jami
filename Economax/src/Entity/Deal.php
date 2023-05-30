@@ -75,6 +75,11 @@ class Deal
         return $this;
     }
 
+    public function getType(): ?string
+    {
+        return (new \ReflectionClass($this))->getShortName();
+    }
+
     public function getLink(): ?string
     {
         return $this->link;

@@ -6,40 +6,13 @@
 
     <div class="container">
         {% for deal in deals %}
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ deal.title }} </h5>
-
-                    {% if type == 'deal' %}
-                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.price }} €</h6>
-                    {% elseif type == 'promo' %}
-                        <h6 class="card-subtitle mb-2 text-muted">Promo</h6>
-                    {% endif %}
-
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <button class="btn btn-primary">-</button>
-                            </div>
-                            <div class="col-sm-4 text-center">
-                                <span class="value">5</span>
-                            </div>
-                            <div class="col-sm-4 text-end">
-                                <button class="btn btn-danger">+</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-subtitle mb-2 text-muted">
-                        <a class="btn btn-primary" href="#">Moins</a>
-                        <span class="">{{ deal.temperature }}</span>
-                        <a class="btn btn-primary" href="#" >Plus</a>
-                    </div>
-                    <p class="card-text">{{ deal.description }}</p>
-                </div>
-            </div>
-            {#{% include 'layout-parts/deal-card.html.twig' %}#}
+            {% include 'layout-parts/deal-card.html.twig' %}
         {% endfor %}
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('add_temp_deal') }}
 {% endblock %}
