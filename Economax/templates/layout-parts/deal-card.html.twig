@@ -4,7 +4,7 @@
     <div class="card-body m-3">
         <div class="">
             <button class="btn btn-primary btn-sm decrease-temperature" id_deal="{{ deal.id }}">-</button>
-            <span class="value" id="temp-{{ deal.id }}">{{ deal.temperature }}</span>
+            <span class="value {% if deal.getSumTemperatures() > 0 %}text-danger{% else %}text-primary{% endif %}" id="temp-{{ deal.id }}">{{ deal.getSumTemperatures() }}°</span>
             <button class="btn btn-danger btn-sm increase-temperature" id_deal="{{ deal.id }}">+</button>
             <span class="float-end"><i class="bi bi-clock"></i> Le {{ deal.createdAt|date('d M Y') }}</span>
         </div>
