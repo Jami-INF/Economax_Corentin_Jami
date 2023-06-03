@@ -96,7 +96,7 @@ class DealController extends AbstractController
                 $this->promoCodeRepository->save($deal);
             }
 
-            return $this->redirectToRoute('app_deal');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('deal/form.html.twig', [
