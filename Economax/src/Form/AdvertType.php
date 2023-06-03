@@ -14,19 +14,34 @@ class AdvertType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('link')
-            ->add('promoCode')
-            ->add('title')
+            ->add('link', null, [
+                'label' => 'Lien de l\'annonce',
+            ])
+            ->add('promoCode', null, [
+                'label' => 'Code promo',
+            ])
+            ->add('title', null, [
+                'label' => 'Titre de l\'annonce',
+            ])
             ->add('description')
-            ->add('isExpired')
-            ->add('price')
-            ->add('usualPrice')
-            ->add('shipping')
+            ->add('price', null, [
+                'label' => 'Prix de l\'annonce',
+            ])
+            ->add('usualPrice', null, [
+                'label' => 'Prix habituel',
+            ])
+            ->add('shipping', null, [
+                'label' => 'Frais de port',
+            ])
             ->add('groups', EntityType::class, [
                 'class' => Group::class,
                 'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => false,
+                'label' => 'Groupe de l\'annonce',
+                'attr' => [
+                    'class' => 'form-control d-flex flex-wrap justify-content-between',
+                ],
             ])
         ;
     }

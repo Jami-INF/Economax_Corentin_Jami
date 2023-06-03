@@ -16,20 +16,24 @@ class PromoCodeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('link')
-            ->add('promoCode')
-            ->add('title')
-            ->add('description')
-            ->add('isExpired')
+            ->add('link', null, [
+                'label' => 'Lien de l\'annonce',
+            ])
+            ->add('promoCode', null, [
+                'label' => 'Code promo',
+            ])
+            ->add('title', null, [
+                'label' => 'Titre de l\'annonce',
+            ])
+            ->add('description', null, [
+                'label' => 'Description de l\'annonce',
+            ])
             ->add('typeReduc', EnumType::class, [
                 'class' => TypeReducEnum::class,
                 'choice_label' => 'getLabel',
+                'label' => 'Type de réduction',
             ])
-            ->add('value', null,
-                [
-                    'attr' => [
-                        'placeholder' => 'Valeur de la réduction',
-                    ],
+            ->add('value', null, [
                     'label' => 'Valeur de la réduction',
                 ]
             )
@@ -38,6 +42,10 @@ class PromoCodeType extends AbstractType
                 'choice_label' => 'name',
                 'expanded' => true,
                 'multiple' => false,
+                'label' => 'Groupe de l\'annonce',
+                'attr' => [
+                    'class' => 'form-control d-flex flex-wrap justify-content-between',
+                ],
             ])
         ;
     }
