@@ -49,11 +49,37 @@
                     </button>
                 </div>
                 <div class="col-md-6">
-                    <h1>test</h1>
+                    <h4>Aperçu</h4>
+
+                    <div class="card my-4">
+                        <div class="card-body m-3">
+                            <div class="">
+                                <button class="btn btn-primary btn-sm decrease-temperature">-</button>
+                                <span class="value">0</span>
+                                <button class="btn btn-danger btn-sm increase-temperature">+</button>
+                                <span class="float-end"><i class="bi bi-clock"></i></span>
+                            </div>
+                            <div>
+                                <h4 class="card-title">Titre</h4>
+                                {% if type == 'deal' %}
+                                    <h6 class="card-subtitle mb-2 text-muted">0€</h6>
+                                {% elseif type == 'promo' %}
+                                    <h6 class="card-subtitle mb-2 text-muted">%/€</h6>
+                                {% endif %}
+                                <p class="card-text justify">Description</p>
+                            </div>
+                            <div class="my-3">
+                                <span class="">Deal postée par {{ app.user.username }}</span>
+                                <div class="float-end">
+                                    <button class="btn btn-primary">0<i class="bi bi-chat-left-text"></i></button>
+                                    <button class="btn btn-primary">Voir le deal  <i class="bi bi-box-arrow-up-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
 
         {{ form_end(form) }}
     </div>
