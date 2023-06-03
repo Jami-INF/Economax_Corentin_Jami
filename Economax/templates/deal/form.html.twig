@@ -60,13 +60,13 @@
                                 <span class="float-end"><i class="bi bi-clock"></i></span>
                             </div>
                             <div>
-                                <h4 class="card-title">Titre</h4>
+                                <h4 class="card-title preview-title">Titre</h4>
                                 {% if type == 'deal' %}
-                                    <h6 class="card-subtitle mb-2 text-muted">0€</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted preview-price">0€</h6>
                                 {% elseif type == 'promo' %}
-                                    <h6 class="card-subtitle mb-2 text-muted">%/€</h6>
+                                    <h6 class="card-subtitle mb-2 text-muted preview-price">%</h6>
                                 {% endif %}
-                                <p class="card-text justify">Description</p>
+                                <p class="card-text justify preview-description">Description</p>
                             </div>
                             <div class="my-3">
                                 <span class="">Deal postée par {{ app.user.username }}</span>
@@ -85,6 +85,10 @@
     </div>
 {% endblock %}
 
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('form_preview') }}
+{% endblock %}
 
 
 
