@@ -43,10 +43,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Deal::class)]
     private Collection $deals;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Temperature::class)]
+    private Collection $temperatures;
+
+
     public function __construct()
     {
         $this->comment = new ArrayCollection();
         $this->deals = new ArrayCollection();
+        $this->temperatures = new ArrayCollection();
     }
 
     /**
@@ -192,6 +197,58 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $deal->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Temperature>
+     */
+    public function getTemperatures(): Collection
+    {
+        return $this->temperatures;
+    }
+
+    public function addTemperature(Temperature $temperature): self
+    {
+        if (!$this->temperatures->contains($temperature)) {
+            $this->temperatures->add($temperature);
+            $temperature->setDeal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTemperature(Temperature $temperature): self
+    {
+        if ($this->temperatures->removeElement($temperature)) {
+            // set the owning side to null (unless already changed)
+            if ($temperature->getDeal() === $this) {
+                $temperature->setDeal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTemperature(): ?Temperature
+    {
+        return $this->temperature;
+    }
+
+    public function setTemperature(?Temperature $temperature): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($temperature === null && $this->temperature !== null) {
+            $this->temperature->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($temperature !== null && $temperature->getUser() !== $this) {
+            $temperature->setUser($this);
+        }
+
+        $this->temperature = $temperature;
 
         return $this;
     }

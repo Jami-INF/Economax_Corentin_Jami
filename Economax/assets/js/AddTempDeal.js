@@ -1,5 +1,3 @@
-console.log('AddTempDeal.js loaded')
-
 $(document).ready(function() {
     $('.increase-temperature').click(function () {
         updateTemperature($(this).attr('id_deal'), "increase");
@@ -18,7 +16,7 @@ $(document).ready(function() {
             url: url,
             method: 'POST',
             success: function (data) {
-                $('#temp-' + dealId).text(data.temperature)
+                $('#temp-' + dealId).text(data.temperature+"°");
             }
         });
     }

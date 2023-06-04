@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\Admin\User\UserPasswordType;
+use App\Form\UserPasswordType;
 use App\Form\SignUpType;
 use App\Repository\UserRepository;
 use App\Service\PasswordResetter;

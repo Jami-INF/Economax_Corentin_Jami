@@ -24,9 +24,6 @@ class Deal
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $temperature = null;
-
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $link = null;
 
@@ -53,26 +50,20 @@ class Deal
     #[ORM\OneToMany(mappedBy: 'deal', targetEntity: Comment::class)]
     private Collection $comments;
 
+    #[ORM\OneToMany(mappedBy: 'deal', targetEntity: Temperature::class)]
+    private Collection $temperatures;
+
+
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->temperatures = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTemperature(): ?int
-    {
-        return $this->temperature;
-    }
-
-    public function setTemperature(int $temperature): self
-    {
-        $this->temperature = $temperature;
-
-        return $this;
     }
 
     public function getType(): ?string
@@ -202,4 +193,48 @@ class Deal
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Temperature>
+     */
+    public function getTemperatures(): Collection
+    {
+        return $this->temperatures;
+    }
+
+    public function addTemperature(Temperature $temperature): self
+    {
+        if (!$this->temperatures->contains($temperature)) {
+            $this->temperatures->add($temperature);
+            $temperature->setDeal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTemperature(Temperature $temperature): self
+    {
+        if ($this->temperatures->removeElement($temperature)) {
+            // set the owning side to null (unless already changed)
+            if ($temperature->getDeal() === $this) {
+                $temperature->setDeal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * getSumTemperatures() returns the sum of all temperatures
+     * @return int
+     */
+    public function getSumTemperatures(): int
+    {
+        $sum = 0;
+        foreach ($this->temperatures as $temperature) {
+            $sum += $temperature->getValue();
+        }
+        return $sum;
+    }
+
 }
