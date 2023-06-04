@@ -140,19 +140,14 @@ class DealController extends AbstractController
     {
         //vérifie que l'utilisateur n'a pas déjà voté pour ce deal
         $temperature = $this->temperatureRepository->findOneBy(['deal' => $deal, 'user' => $this->security->getUser()]);
-        if($temperature != null){
-            return new JsonResponse(['temperature' => $deal->getSumTemperatures()]);
-        }else{
+        if($temperature == null){
             $temperature = new Temperature();
             $temperature->setDeal($deal);
             $temperature->setUser($this->security->getUser());
             $temperature->setValue(1);
-
             $this->temperatureRepository->save($temperature);
-
-            return new JsonResponse(['temperature' => $deal->getSumTemperatures()]);
         }
-
+        return new JsonResponse(['temperature' => $deal->getSumTemperatures()]);
     }
 
     #[Route('/deal/edit/{id}/temperature/decrease', name: 'decrease')]
@@ -160,18 +155,13 @@ class DealController extends AbstractController
     {
         //vérifie que l'utilisateur n'a pas déjà voté pour ce deal
         $temperature = $this->temperatureRepository->findOneBy(['deal' => $deal, 'user' => $this->security->getUser()]);
-        if($temperature != null){
-            return new JsonResponse(['temperature' => $deal->getSumTemperatures()]);
-        }else{
+        if($temperature == null){
             $temperature = new Temperature();
             $temperature->setDeal($deal);
             $temperature->setUser($this->security->getUser());
             $temperature->setValue(-1);
-
             $this->temperatureRepository->save($temperature);
-
-            return new JsonResponse(['temperature' => $deal->getSumTemperatures()]);
         }
+        return new JsonResponse(['temperature' => $deal->getSumTemperatures()]);
     }
-
 }

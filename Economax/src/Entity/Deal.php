@@ -224,28 +224,6 @@ class Deal
         return $this;
     }
 
-    public function getTemperature(): ?Temperature
-    {
-        return $this->temperature;
-    }
-
-    public function setTemperature(?Temperature $temperature): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($temperature === null && $this->temperature !== null) {
-            $this->temperature->setDeal(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($temperature !== null && $temperature->getDeal() !== $this) {
-            $temperature->setDeal($this);
-        }
-
-        $this->temperature = $temperature;
-
-        return $this;
-    }
-
     /**
      * getSumTemperatures() returns the sum of all temperatures
      * @return int
