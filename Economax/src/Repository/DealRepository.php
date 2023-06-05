@@ -56,13 +56,15 @@ class DealRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    // récupére les deals hot (plus de 100°), triés par date de publication décroissante.
+    // récupére les deals hot (somme de value de Temperature de 100°), triés par date de publication décroissante.
     public function findAllHot() : array
     {
         $qb = $this->createQueryBuilder('d')
             ->select('d')
-            ->where('d.temperature > :temperature')
-            ->setParameter('temperature', 100)
+            ->leftJoin('d.temperatures', 't')
+            ->addSelect('SUM(t.value) AS HIDDEN sumValue')
+            ->groupBy('d')
+            ->having('sumValue >= 100')
             ->orderBy('d.createdAt', 'DESC')
         ;
 
