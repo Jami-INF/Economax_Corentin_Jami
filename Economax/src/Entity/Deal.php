@@ -7,8 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\SoftDeleteable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
+#[SoftDeleteable(fieldName: 'expireAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: DealRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'type', type: Types::STRING)]
@@ -19,10 +21,14 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 class Deal
 {
     use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    private ?\DateTimeInterface $expireAt = null;
 
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $link = null;
@@ -35,9 +41,6 @@ class Deal
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
-
-    #[ORM\Column]
-    private ?bool $isExpired = null;
 
     #[ORM\ManyToOne(inversedBy: 'deals')]
     #[ORM\JoinColumn(nullable: false)]
@@ -124,18 +127,6 @@ class Deal
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function isIsExpired(): ?bool
-    {
-        return $this->isExpired;
-    }
-
-    public function setIsExpired(bool $isExpired): self
-    {
-        $this->isExpired = $isExpired;
 
         return $this;
     }

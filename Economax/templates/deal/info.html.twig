@@ -26,7 +26,10 @@
                 {% endif %}
 
                 <p class="card-text">{{ deal.description }}</p>
-                
+                {% if app.user == deal.user %}
+                    <a href="{{ path('app_deal_delete', {id: deal.id}) }}" class="btn btn-danger">Expirer</a>
+                {% endif %}
+
             </div>
             <div>
                 <p>Comments</p>
