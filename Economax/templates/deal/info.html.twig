@@ -8,35 +8,47 @@
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <a href=""> <h5 class="card-title">{{ deal.title }}</h5> </a>
-                <div class="card-subtitle mb-2 text-muted">
-                    <a class="btn btn-primary" href="#">Moins</a>
-                    <span class="">{{ deal.temperature }}</span>
-                    <a class="btn btn-primary" href="#" >Plus</a>
+                <div class="">
+                    <button class="btn btn-primary btn-sm decrease-temperature" id_deal="{{ deal.id }}">-</button>
+                    <span class="value {% if deal.getSumTemperatures() > 0 %}text-danger{% else %}text-primary{% endif %}" id="temp-{{ deal.id }}">{{ deal.getSumTemperatures() }}°</span>
+                    <button class="btn btn-danger btn-sm increase-temperature" id_deal="{{ deal.id }}">+</button>
+                    <span class="float-end"><i class="bi bi-clock"></i> Le {{ deal.createdAt|date('d M Y') }}</span>
                 </div>
+                <a href=""> <h5 class="card-title">{{ deal.title }}</h5> </a>
+                {% if deal.type == 'Advert' %}
+                    <h6 class="card-subtitle mb-2 text-muted">{{ deal.price }}€</h6>
+                {% elseif deal.type == 'PromoCode' %}
+                    {% if (deal.typeReduc.value == 'percent') %}
+                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.value }}%</h6>
+                    {% elseif (deal.typeReduc.value == 'amount') %}
+                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.value }}€</h6>
+                    {% endif %}
+                {% endif %}
+
                 <p class="card-text">{{ deal.description }}</p>
                 {% if app.user == deal.user %}
                     <a href="{{ path('app_deal_delete', {id: deal.id}) }}" class="btn btn-danger">Expirer</a>
                 {% endif %}
+
             </div>
-        </div>
-        <div>
-            <p>Comments</p>
             <div>
-                {{ form_start(form) }}
-                {{ form_row(form.text) }}
-                {{ form_rest(form) }}
-                <button type="submit" class="btn btn-success btn-sm text-white">Poster</button>
-                {{ form_end(form) }}
-            </div>
-            {% for comment in comments %}
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-text">{{ comment.text }}</p>
-                        <p class="card-text">{{ comment.createdAt|date('d/m/Y') }}</p>
-                    </div>
+                <p>Comments</p>
+                <div>
+                    {{ form_start(form) }}
+                    {{ form_row(form.text) }}
+                    {{ form_rest(form) }}
+                    <button type="submit" class="btn btn-success btn-sm text-white">Poster</button>
+                    {{ form_end(form) }}
                 </div>
-            {% endfor %}
+                {% for comment in comments %}
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">{{ comment.text }}</p>
+                            <p class="card-text">{{ comment.createdAt|date('d/m/Y') }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
