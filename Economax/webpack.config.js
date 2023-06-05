@@ -22,6 +22,7 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('add_temp_deal', './assets/js/AddTempDeal.js')
+    .addEntry('form_preview', './assets/js/formPreview.js')
     Encore.enableSassLoader()
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)

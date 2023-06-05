@@ -102,7 +102,8 @@ class DealController extends AbstractController
         }
 
         return $this->render('deal/form.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'type' => $type
         ]);
     }
 
