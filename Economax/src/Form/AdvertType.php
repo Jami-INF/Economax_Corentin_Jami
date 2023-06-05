@@ -8,6 +8,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichFileType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class AdvertType extends AbstractType
 {
@@ -42,6 +44,10 @@ class AdvertType extends AbstractType
                 'attr' => [
                     'class' => 'form-control d-flex flex-wrap justify-content-between',
                 ],
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'required' => false,
+                'label' => 'Image',
             ])
         ;
     }

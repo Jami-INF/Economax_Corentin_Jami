@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Comment;
 use App\Entity\Deal;
+use App\Entity\Temperature;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use App\Repository\DealRepository;
+use App\Repository\TemperatureRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,6 +31,7 @@ class DealController extends AbstractController
         protected PromoCodeRepository $promoCodeRepository,
         protected DealRepository $dealRepository,
         protected CommentRepository $commentRepository,
+        protected TemperatureRepository $temperatureRepository,
         Security $security
     )
     {
@@ -88,7 +91,6 @@ class DealController extends AbstractController
             if($user == null){
                 return $this->redirectToRoute('app_login');
             }
-            $deal->setTemperature(0);
             $deal->setUser($this->security->getUser());
             if($type == 'deal'){
                 $this->advertRepository->save($deal);
@@ -96,7 +98,7 @@ class DealController extends AbstractController
                 $this->promoCodeRepository->save($deal);
             }
 
-            return $this->redirectToRoute('app_deal');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('deal/form.html.twig', [
@@ -137,19 +139,39 @@ class DealController extends AbstractController
     #[Route('/deal/edit/{id}/temperature/increase', name: 'increase')]
     public function addTemperature(Deal $deal): JsonResponse
     {
-        $deal->setTemperature($deal->getTemperature() + 1);
-        $this->dealRepository->save($deal);
-
-        return new JsonResponse(['temperature' => $deal->getTemperature()]);
+        //vérifie que l'utilisateur n'a pas déjà voté pour ce deal
+        $temperature = $this->temperatureRepository->findOneBy(['deal' => $deal, 'user' => $this->security->getUser()]);
+        if($temperature == null){
+            $temperature = new Temperature();
+            $temperature->setDeal($deal);
+            $temperature->setUser($this->security->getUser());
+            $temperature->setValue(1);
+            $this->temperatureRepository->save($temperature);
+        }
+        return new JsonResponse(['temperature' => $deal->getSumTemperatures()]);
     }
 
     #[Route('/deal/edit/{id}/temperature/decrease', name: 'decrease')]
     public function removeTemperature(Deal $deal): JsonResponse
     {
-        $deal->setTemperature($deal->getTemperature() - 1);
-        $this->dealRepository->save($deal);
+        //vérifie que l'utilisateur n'a pas déjà voté pour ce deal
+        $temperature = $this->temperatureRepository->findOneBy(['deal' => $deal, 'user' => $this->security->getUser()]);
+        if($temperature == null){
+            $temperature = new Temperature();
+            $temperature->setDeal($deal);
+            $temperature->setUser($this->security->getUser());
+            $temperature->setValue(-1);
+            $this->temperatureRepository->save($temperature);
+        }
+        return new JsonResponse(['temperature' => $deal->getSumTemperatures()]);
+    }
 
-        return new JsonResponse(['temperature' => $deal->getTemperature()]);
+    #[Route('/deal/delete/{id}', name: 'app_deal_delete')]
+    public function delete(?Deal $deal): Response
+    {
+        $this->dealRepository->remove($deal);
+
+        return $this->redirectToRoute('app_home');
     }
 
 }

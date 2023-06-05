@@ -4,23 +4,44 @@
     <div class="card-body m-3">
         <div class="">
             <button class="btn btn-primary btn-sm decrease-temperature" id_deal="{{ deal.id }}">-</button>
-            <span class="value" id="temp-{{ deal.id }}">{{ deal.temperature }}</span>
+            {% if deal.getSumTemperatures() > 0 %}
+                <span class="value text-danger" id="temp-{{ deal.id }}">{{ deal.getSumTemperatures() }}°</span>
+            {% else %}
+                <span class="value text-primary" id="temp-{{ deal.id }}">{{ deal.getSumTemperatures() }}°</span>
+            {% endif %}
+
             <button class="btn btn-danger btn-sm increase-temperature" id_deal="{{ deal.id }}">+</button>
             <span class="float-end"><i class="bi bi-clock"></i> Le {{ deal.createdAt|date('d M Y') }}</span>
         </div>
         <div class="">
             <a class="text-decoration-none text-black" href="{{ path('app_deal_info', {id: deal.id}) }}">
-                <h4 class="card-title">{{ deal.title }}</h4>
-                {% if deal.type == 'Advert' %}
-                    <h6 class="card-subtitle mb-2 text-muted">{{ deal.price }}€</h6>
-                {% elseif deal.type == 'PromoCode' %}
-                    {% if (deal.typeReduc.value == 'percent') %}
-                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.value }}%</h6>
-                    {% elseif (deal.typeReduc.value == 'amount') %}
-                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.value }}€</h6>
-                    {% endif %}
-                {% endif %}
-                <p class="card-text justify">{{ deal.getShortDescription() }}</p>
+                <div class=" mb-3" style="max-width: 540px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            {% if deal.imageName == null %}
+                                <img src="{{ asset('images/deals/default-img.jpg') }}" class="img-fluid" alt="Image deal">
+                            {% else %}
+                                <img src="{{ asset('images/deals/' ~ deal.imageName) }}" class="img-fluid" alt="Image deal">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ deal.title }}</h5>
+                                {% if deal.type == 'Advert' %}
+                                    <h6 class="card-subtitle mb-2 text-muted">{{ deal.price }}€</h6>
+                                {% elseif deal.type == 'PromoCode' %}
+                                    {% if (deal.typeReduc.value == 'percent') %}
+                                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.value }}%</h6>
+                                    {% elseif (deal.typeReduc.value == 'amount') %}
+                                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.value }}€</h6>
+                                    {% endif %}
+                                {% endif %}
+                                <p class="card-text justify">{{ deal.getShortDescription() }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </a>
         </div>
         <div class="my-3">
