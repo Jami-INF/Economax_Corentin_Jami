@@ -21,7 +21,6 @@ class PromoCodeType extends AbstractType
             ->add('promoCode')
             ->add('title')
             ->add('description')
-            ->add('isExpired')
             ->add('typeReduc', EnumType::class, [
                 'class' => TypeReducEnum::class,
                 'choice_label' => 'getLabel',

@@ -7,10 +7,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\SoftDeleteable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
+#[SoftDeleteable(fieldName: 'expireAt', timeAware: false)]
 #[ORM\Entity(repositoryClass: DealRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'type', type: Types::STRING)]
@@ -22,13 +24,14 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class Deal
 {
     use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $temperature = null;
+    #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    private ?\DateTimeInterface $expireAt = null;
 
     #[ORM\Column(length: 1024, nullable: true)]
     private ?string $link = null;
@@ -41,9 +44,6 @@ class Deal
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
-
-    #[ORM\Column]
-    private ?bool $isExpired = null;
 
     #[ORM\ManyToOne(inversedBy: 'deals')]
     #[ORM\JoinColumn(nullable: false)]
@@ -65,26 +65,18 @@ class Deal
     #[ORM\Column(nullable: true)]
     private ?int $imageSize = null;
 
+    #[ORM\OneToMany(mappedBy: 'deal', targetEntity: Temperature::class)]
+    private Collection $temperatures;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->temperatures = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTemperature(): ?int
-    {
-        return $this->temperature;
-    }
-
-    public function setTemperature(int $temperature): self
-    {
-        $this->temperature = $temperature;
-
-        return $this;
     }
 
     public function getType(): ?string
@@ -145,18 +137,6 @@ class Deal
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function isIsExpired(): ?bool
-    {
-        return $this->isExpired;
-    }
-
-    public function setIsExpired(bool $isExpired): self
-    {
-        $this->isExpired = $isExpired;
 
         return $this;
     }
@@ -250,4 +230,48 @@ class Deal
     {
         return $this->imageSize;
     }
+
+    /**
+     * @return Collection<int, Temperature>
+     */
+    public function getTemperatures(): Collection
+    {
+        return $this->temperatures;
+    }
+
+    public function addTemperature(Temperature $temperature): self
+    {
+        if (!$this->temperatures->contains($temperature)) {
+            $this->temperatures->add($temperature);
+            $temperature->setDeal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTemperature(Temperature $temperature): self
+    {
+        if ($this->temperatures->removeElement($temperature)) {
+            // set the owning side to null (unless already changed)
+            if ($temperature->getDeal() === $this) {
+                $temperature->setDeal(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * getSumTemperatures() returns the sum of all temperatures
+     * @return int
+     */
+    public function getSumTemperatures(): int
+    {
+        $sum = 0;
+        foreach ($this->temperatures as $temperature) {
+            $sum += $temperature->getValue();
+        }
+        return $sum;
+    }
+
 }
