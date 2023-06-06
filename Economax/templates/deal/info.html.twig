@@ -3,36 +3,66 @@
 {% block title %}Economax{% endblock %}
 
 {% block body %}
-
-    <h2>Information du deal</h2>
     <div class="container">
-        <div class="card">
+        <div class="card my-2">
             <div class="card-body">
-                <div class="">
-                    <button class="btn btn-primary btn-sm decrease-temperature" id_deal="{{ deal.id }}">-</button>
-                    <span class="value {% if deal.getSumTemperatures() > 0 %}text-danger{% else %}text-primary{% endif %}" id="temp-{{ deal.id }}">{{ deal.getSumTemperatures() }}°</span>
-                    <button class="btn btn-danger btn-sm increase-temperature" id_deal="{{ deal.id }}">+</button>
-                    <span class="float-end"><i class="bi bi-clock"></i> Le {{ deal.createdAt|date('d M Y') }}</span>
-                </div>
-                <a href=""> <h5 class="card-title">{{ deal.title }}</h5> </a>
-                {% if deal.type == 'Advert' %}
-                    <h6 class="card-subtitle mb-2 text-muted">{{ deal.price }}€</h6>
-                {% elseif deal.type == 'PromoCode' %}
-                    {% if (deal.typeReduc.value == 'percent') %}
-                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.value }}%</h6>
-                    {% elseif (deal.typeReduc.value == 'amount') %}
-                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.value }}€</h6>
-                    {% endif %}
-                {% endif %}
+                <div class="row g-0">
+                    <div class="col-auto m-3">
+                        {% if deal.imageName == null %}
+                            <img src="{{ asset('images/deals/default-img.jpg') }}" class="img-fluid" style="width: 400px; height: 300px; object-fit: cover;" alt="Image deal">
+                        {% else %}
+                            <img src="{{ asset('images/deals/' ~ deal.imageName) }}" class="img-fluid" style="width: 400px; height: 300px; object-fit: cover;"  alt="Image deal">
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-primary btn-sm decrease-temperature" id_deal="{{ deal.id }}">-</button>
+                        <span class="value {% if deal.getSumTemperatures() > 0 %}text-danger{% else %}text-primary{% endif %}" id="temp-{{ deal.id }}">{{ deal.getSumTemperatures() }}°</span>
+                        <button class="btn btn-danger btn-sm increase-temperature" id_deal="{{ deal.id }}">+</button>
+                        <span class="float-end">{{ deal.comments|length }}  <i class="bi bi-chat-left-text"></i> <i class="bi bi-clock"></i> - Le {{ deal.createdAt|date('d M Y') }}</span>
 
+                        <div class="my-3">
+                            <h5 class="card-title">{{ deal.title }}</h5>
+                            {% if deal.type == 'Advert' %}
+                                <h6 class="card-subtitle m-2 text-danger">{{ deal.price }}€</h6>
+                            {% elseif deal.type == 'PromoCode' %}
+                                {% if (deal.typeReduc.value == 'percent') %}
+                                    <h6 class="card-subtitle m-2 text-danger">{{ deal.value }}%</h6>
+                                {% elseif (deal.typeReduc.value == 'amount') %}
+                                    <h6 class="card-subtitle m-2 text-danger">{{ deal.value }}€</h6>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="my-3">
+                            <div class="text-decoration-none text-black float-end">
+                                <a href="{{ path('app_deal_info', {id: deal.id}) }}">
+                                </a>
+                                <a href="{{ deal.link }}">
+                                    <button class="btn btn-primary">Voir le deal  <i class="bi bi-box-arrow-up-right"></i></button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="float-end">
+                    <span class="">Deal postée par {{ deal.user.username }}</span>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="card my-2">
+            <div class="card-body">
                 <p class="card-text">{{ deal.description }}</p>
                 {% if app.user == deal.user %}
-                    <a href="{{ path('app_deal_delete', {id: deal.id}) }}" class="btn btn-danger">Expirer</a>
+                    <a href="{{ path('app_deal_delete', {id: deal.id}) }}" class="btn btn-danger">Expiré ?</a>
                 {% endif %}
 
             </div>
-            <div>
-                <p>Comments</p>
+        </div>
+        <div class="card my-2">
+            <div class="card-body">
+                <p>Ajouter un commentaire</p>
                 <div>
                     {{ form_start(form) }}
                     {{ form_row(form.text) }}
@@ -40,16 +70,21 @@
                     <button type="submit" class="btn btn-success btn-sm text-white">Poster</button>
                     {{ form_end(form) }}
                 </div>
-                {% for comment in comments %}
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">{{ comment.text }}</p>
-                            <p class="card-text">{{ comment.createdAt|date('d/m/Y') }}</p>
-                        </div>
-                    </div>
-                {% endfor %}
+                <div class="card my-4">
+                    {% for comment in comments %}
+                            <div class="card-body">
+                                <p class="card-text">{{ comment.text }}</p>
+                                <p class="card-text"><i>Postée le {{ comment.createdAt|date('d/m/Y') }} par {{ comment.user.username }}</i></p>
+                            </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('add_temp_deal') }}
 {% endblock %}
