@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Preview{% endblock %}
+
+{% block header %}
+    {{ parent() }}
+    {%  include "layout-parts/navbar-user.html.twig" %}
+{% endblock %}
+
+{% block body %}
+
+<div class="example-wrapper">
+    <h1>Aperçu</h1>
+
+    <div class="card">
+        <h2>Statistiques</h2>
+
+        <p>Nombre de deals postés : {{ user.deals|length }}</p>
+        <p>Nombre de commentaires postés : {{ user.comment|length }}</p>
+        <p>Note du deal posté le plus hot : </p>
+        <p>Moyenne des notes des deals postés sur 1 an glissant : </p>
+        <p>Pourcentage de deals postés devenus hot : </p>
+    </div>
+
+    <div class="card">
+        <h2>Badges</h2>
+
+        {% set votedDeals = 7 %}
+        {% set totalDeals = 10 %}
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Badge Surveillant</h5>
+                <p>Vous avez voté pour 10 deals.</p>
+                <div class="progress mb-3">
+                    <div class="progress-bar" role="progressbar" style="width: {{ (votedDeals / totalDeals) * 100 }}%;" aria-valuenow="{{ votedDeals }}" aria-valuemin="0" aria-valuemax="{{ totalDeals }}"></div>
+                </div>
+                <p class="card-text">{{ votedDeals }}/{{ totalDeals }}</p>
+                {% if votedDeals >= totalDeals %}
+                    <button class="btn btn-success">Badge acquis !</button>
+                {% else %}
+                    <button class="btn btn-secondary" disabled>Badge non acquis</button>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Badge Cobaye</h3>
+            <p>Vous avez posté au moins 10 deals</p>
+        </div>
+
+        <div class="card">
+            <h3>Badge Rapport de stage</h3>
+            <p>Vous avez posté au moins 10 commentaires</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
