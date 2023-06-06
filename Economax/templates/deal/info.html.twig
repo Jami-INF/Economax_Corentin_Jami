@@ -15,20 +15,38 @@
                         {% endif %}
                     </div>
                     <div class="col">
-                        <button class="btn btn-primary btn-sm decrease-temperature" id_deal="{{ deal.id }}">-</button>
-                        <span class="value {% if deal.getSumTemperatures() > 0 %}text-danger{% else %}text-primary{% endif %}" id="temp-{{ deal.id }}">{{ deal.getSumTemperatures() }}°</span>
-                        <button class="btn btn-danger btn-sm increase-temperature" id_deal="{{ deal.id }}">+</button>
-                        <span class="float-end">{{ deal.comments|length }}  <i class="bi bi-chat-left-text"></i> <i class="bi bi-clock"></i> - Le {{ deal.createdAt|date('d M Y') }}</span>
+                        <div class="">
+                            <button class="btn btn-primary btn-sm decrease-temperature" id_deal="{{ deal.id }}">-</button>
+                            {% if deal.getSumTemperatures() > 0 %}
+                                <span class="value text-danger" id="temp-{{ deal.id }}">{{ deal.getSumTemperatures() }}°</span>
+                            {% else %}
+                                <span class="value text-primary" id="temp-{{ deal.id }}">{{ deal.getSumTemperatures() }}°</span>
+                            {% endif %}
+
+                            <button class="btn btn-danger btn-sm increase-temperature" id_deal="{{ deal.id }}">+</button>
+                            <span class="float-end">{{ deal.comments|length }}  <i class="bi bi-chat-left-text"></i> <i class="bi bi-clock"></i> - Le {{ deal.createdAt|date('d M Y') }}</span>
+                        </div>
 
                         <div class="my-3">
-                            <h5 class="card-title">{{ deal.title }}</h5>
+                            <h5 class="fs-3">{{ deal.title }}</h5>
                             {% if deal.type == 'Advert' %}
-                                <h6 class="card-subtitle m-2 text-danger">{{ deal.price }}€</h6>
+                                {% if deal.price is not null and deal.usualPrice is not null and deal.price < deal.usualPrice %}
+                                    <span>
+                                            <span class="fs-4 text-danger mb-2">{{ deal.price }}€</span>
+                                            <span class="fs-4 mb-2 text-muted text-decoration-line-through">{{ deal.usualPrice }}€</span>
+                                            {% set percentageMissing = ((deal.usualPrice - deal.price) / deal.usualPrice) * 100 %}
+                                            <span class="fs-5 mb-2 text-muted">-{{ percentageMissing|round(0) }}%</span>
+                                        </span>
+                                {% else %}
+                                    <span>
+                                            <span class="fs-4 text-danger mb-2">{{ deal.price }}€</span>
+                                        </span>
+                                {% endif %}
                             {% elseif deal.type == 'PromoCode' %}
                                 {% if (deal.typeReduc.value == 'percent') %}
-                                    <h6 class="card-subtitle m-2 text-danger">{{ deal.value }}%</h6>
+                                    <h6 class="fs-4 m-2 text-danger">{{ deal.value }}%</h6>
                                 {% elseif (deal.typeReduc.value == 'amount') %}
-                                    <h6 class="card-subtitle m-2 text-danger">{{ deal.value }}€</h6>
+                                    <h6 class="fs-4 m-2 text-danger">{{ deal.value }}€</h6>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -55,7 +73,7 @@
             <div class="card-body">
                 <h3>À propos de ce deal</h3>
 
-                <p class="card-text">{{ deal.description }}</p>
+                <p class="card-text my-4">{{ deal.description }}</p>
                 {% if app.user == deal.user %}
                     <a href="{{ path('app_deal_delete', {id: deal.id}) }}" class="btn btn-danger">Expiré ?</a>
                 {% endif %}
@@ -65,21 +83,32 @@
         <div class="card my-2">
             <div class="card-body">
                 <h3>Les commentaires</h3>
+                <div class="my-4">
+                    <p>Ajouter un commentaire ?</p>
 
-                <p>Ajouter un commentaire</p>
-                <div>
-                    {{ form_start(form) }}
-                    {{ form_row(form.text) }}
-                    {{ form_rest(form) }}
-                    <button type="submit" class="btn btn-primary btn-sm text-white">Poster</button>
-                    {{ form_end(form) }}
+                    <div>
+                        {{ form_start(form) }}
+                        <div class="d-flex align-items-center">
+                            <div>
+                                {{ form_row(form.text) }}
+                            </div>
+                            <div class="ms-2">
+                                <button type="submit" class="btn btn-primary btn-sm text-white">Poster</button>
+                            </div>
+                        </div>
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                    </div>
                 </div>
-                <div class="card my-4">
+                <div class="">
                     {% for comment in comments %}
+                        <div class="card my-4">
+
                             <div class="card-body">
                                 <p class="card-text">{{ comment.text }}</p>
                                 <p class="card-text"><i>Postée le {{ comment.createdAt|date('d/m/Y') }} par {{ comment.user.username }}</i></p>
                             </div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>
