@@ -53,6 +53,8 @@
         </div>
         <div class="card my-2">
             <div class="card-body">
+                <h3>À propos de ce deal</h3>
+
                 <p class="card-text">{{ deal.description }}</p>
                 {% if app.user == deal.user %}
                     <a href="{{ path('app_deal_delete', {id: deal.id}) }}" class="btn btn-danger">Expiré ?</a>
@@ -62,12 +64,14 @@
         </div>
         <div class="card my-2">
             <div class="card-body">
+                <h3>Les commentaires</h3>
+
                 <p>Ajouter un commentaire</p>
                 <div>
                     {{ form_start(form) }}
                     {{ form_row(form.text) }}
                     {{ form_rest(form) }}
-                    <button type="submit" class="btn btn-success btn-sm text-white">Poster</button>
+                    <button type="submit" class="btn btn-primary btn-sm text-white">Poster</button>
                     {{ form_end(form) }}
                 </div>
                 <div class="card my-4">
