@@ -1,7 +1,7 @@
 @import "~bootstrap/scss/bootstrap";
 
 body {
-    background-color: lightgray;
+    background-color: #E9EAED;
 }
 
 .logo {
@@ -9,4 +9,9 @@ body {
     height: auto;
     margin-right: 10px;
     margin-left: 20px;
-  }
+}
+
+.img-hot{
+    width: 5.25em;
+    height: 5.25em;
+}

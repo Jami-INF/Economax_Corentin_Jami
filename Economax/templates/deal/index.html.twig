@@ -10,9 +10,30 @@
 {% block body %}
 
     <div class="container">
-        {% for deal in deals %}
-            {% include 'layout-parts/deal-card.html.twig' %}
-        {% endfor %}
+        <div class="row">
+            <div class="col-md-9">
+                {% for deal in deals %}
+                    {% include 'layout-parts/deal-card.html.twig' %}
+                {% endfor %}
+            </div>
+            <div class="col-md-3">
+                <div class="card my-4">
+                    <p class="card-header">Les plus hot du jour</p>
+                    {% if dealsHot is empty %}
+                        <div class="card-body">
+                            <p class="card-text">Aucun deal hot aujourd'hui</p>
+                        </div>
+                    {% else %}
+                        <div class="card-body">
+                            {% for deal in dealsHot %}
+                                {% include 'layout-parts/hotdeal-card.html.twig' %}
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
