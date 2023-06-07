@@ -42,9 +42,11 @@ class DealController extends AbstractController
     public function index(): Response
     {
         $deals = $this->dealRepository->findAllByComment();
+        $dealsHot = $this->dealRepository->findAllHotToday();
 
         return $this->render('deal/index.html.twig', [
             'deals' => $deals,
+            'dealsHot' => $dealsHot
         ]);
     }
 

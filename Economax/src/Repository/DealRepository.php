@@ -70,4 +70,20 @@ class DealRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findAllHotToday()
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('d')
+            ->leftJoin('d.temperatures', 't')
+            ->addSelect('SUM(t.value) AS HIDDEN sumValue')
+            ->groupBy('d')
+            ->having('sumValue >= 100')
+            ->orderBy('d.createdAt', 'DESC')
+            ->where('d.createdAt > :date')
+            ->setParameter('date', new \DateTime('-1 day'))
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }
