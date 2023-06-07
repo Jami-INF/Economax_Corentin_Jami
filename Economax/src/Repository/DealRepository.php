@@ -57,7 +57,7 @@ class DealRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    // récupére les deals hot (plus de 100°), triés par date de publication décroissante.
+    // récupére les deals hot (somme de value de Temperature de 100°), triés par date de publication décroissante.
     public function findAllHot() : array
     {
         $qb = $this->createQueryBuilder('d')
@@ -71,10 +71,24 @@ class DealRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+    public function findAllHotToday()
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('d')
+            ->leftJoin('d.temperatures', 't')
+            ->addSelect('SUM(t.value) AS HIDDEN sumValue')
+            ->groupBy('d')
+            ->having('sumValue >= 100')
+            ->orderBy('d.createdAt', 'DESC')
+            ->where('d.createdAt > :date')
+            ->setParameter('date', new \DateTime('-1 day'))
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 
     public function findMostVotedDealByUser(?User $user) : Deal
     {
-
         $qb = $this->createQueryBuilder('d')
             ->select('d')
             ->leftJoin('d.temperatures', 't')
@@ -101,7 +115,7 @@ class DealRepository extends ServiceEntityRepository
             ->setParameter('user', $user)
         ;
 
-        return $qb->getQuery()->getOneOrNullResult();
+        return $qb->getQuery()->getResult();
     }
     public function findDealsPostedByUserInLastYear(?User $user)
     {

@@ -25,13 +25,18 @@ class UserController extends AbstractController
     {
         // Stats
         $dealWithMostVote = $this->dealRepository->findMostVotedDealByUser($user);
-        $vote = $dealWithMostVote->getSumTemperatures();
+        $mostVote = $dealWithMostVote->getSumTemperatures();
 
-        $nbDealHot = $this->dealRepository->findNumberOfDealsBecommingHotByUser($user);
+        $dealsHot = $this->dealRepository->findNumberOfDealsBecommingHotByUser($user);
+        $nbDealHot = 0;
+        foreach ($dealsHot as $deal) {
+            $nbDealHot += 1;
+        }
         $nbDeal = $user->getDeals()->count();
         $percentDealHot = $nbDealHot / $nbDeal * 100;
 
         $dealsVote = $this->dealRepository->findDealsPostedByUserInLastYear($user);
+        $vote = 0;
         foreach ($dealsVote as $deal) {
             $vote += $deal->getSumTemperatures();
         }
@@ -44,7 +49,7 @@ class UserController extends AbstractController
 
         return $this->render('user/preview.html.twig', [
             'user' => $user,
-            'vote' => $vote,
+            'vote' => $mostVote,
             'percentDealHot' => $percentDealHot,
             'averageVote' => $averageVote,
             'nbVote' => $nbVote,

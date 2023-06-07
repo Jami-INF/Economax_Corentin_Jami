@@ -1,0 +1,29 @@
+<div>
+    <a class="text-decoration-none text-black" href="{{ path('app_deal_info', {id: deal.id}) }}">
+        <div class="mb-3" style="">
+            <div class="row g-0">
+                <div class="col-auto">
+                    {% if deal.imageName == null %}
+                        <img src="{{ asset('images/deals/default-img.jpg') }}" class="img-hot" alt="Image deal">
+                    {% else %}
+                        <img src="{{ asset('images/deals/' ~ deal.imageName) }}" class="img-hot"  alt="Image deal">
+                    {% endif %}
+                </div>
+                <div class="col-md-5">
+                    <span><span class="text-danger">{{ deal.getSumTemperatures() }}°</span> {{ deal.title }}</span>
+                    {% if deal.type == 'Advert' %}
+                        <span>
+                            <span class="text-danger mb-2">{{ deal.price }}€</span>
+                        </span>
+                    {% elseif deal.type == 'PromoCode' %}
+                        {% if (deal.typeReduc.value == 'percent') %}
+                            <span class="text-danger">{{ deal.value }}%</span>
+                        {% elseif (deal.typeReduc.value == 'amount') %}
+                            <span class="text-danger">-{{ deal.value }}€</span>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

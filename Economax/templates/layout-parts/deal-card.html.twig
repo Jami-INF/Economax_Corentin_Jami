@@ -15,25 +15,36 @@
         </div>
         <div class="">
             <a class="text-decoration-none text-black" href="{{ path('app_deal_info', {id: deal.id}) }}">
-                <div class=" mb-3" style="max-width: 540px;">
+                <div class="mb-3" style="">
                     <div class="row g-0">
-                        <div class="col-md-4">
+                        <div class="col-auto m-3">
                             {% if deal.imageName == null %}
-                                <img src="{{ asset('images/deals/default-img.jpg') }}" class="img-fluid" alt="Image deal">
+                                <img src="{{ asset('images/deals/default-img.jpg') }}" class="img-fluid" style="width: 220px; height: 180px; object-fit: cover;" alt="Image deal">
                             {% else %}
-                                <img src="{{ asset('images/deals/' ~ deal.imageName) }}" class="img-fluid" alt="Image deal">
+                                <img src="{{ asset('images/deals/' ~ deal.imageName) }}" class="img-fluid" style="width: 220px; height: 180px; object-fit: cover;"  alt="Image deal">
                             {% endif %}
                         </div>
-                        <div class="col-md-8">
+                        <div class="col">
                             <div class="card-body">
-                                <h5 class="card-title">{{ deal.title }}</h5>
+                                <h5 class="fs-3">{{ deal.title }}</h5>
                                 {% if deal.type == 'Advert' %}
-                                    <h6 class="card-subtitle mb-2 text-muted">{{ deal.price }}€</h6>
+                                    {% if deal.price is not null and deal.usualPrice is not null and deal.price < deal.usualPrice %}
+                                        <span>
+                                            <span class="fs-4 text-danger mb-2">{{ deal.price }}€</span>
+                                            <span class="fs-4 mb-2 text-muted text-decoration-line-through">{{ deal.usualPrice }}€</span>
+                                            {% set percentageMissing = ((deal.usualPrice - deal.price) / deal.usualPrice) * 100 %}
+                                            <span class="fs-5 mb-2 text-muted">-{{ percentageMissing|round(0) }}%</span>
+                                        </span>
+                                    {% else %}
+                                        <span>
+                                            <span class="fs-4 text-danger mb-2">{{ deal.price }}€</span>
+                                        </span>
+                                    {% endif %}
                                 {% elseif deal.type == 'PromoCode' %}
                                     {% if (deal.typeReduc.value == 'percent') %}
-                                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.value }}%</h6>
+                                        <h6 class="fs-4 mb-2 text-muted">{{ deal.value }}%</h6>
                                     {% elseif (deal.typeReduc.value == 'amount') %}
-                                        <h6 class="card-subtitle mb-2 text-muted">{{ deal.value }}€</h6>
+                                        <h6 class="fs-4 mb-2 text-muted">-{{ deal.value }}€</h6>
                                     {% endif %}
                                 {% endif %}
                                 <p class="card-text justify">{{ deal.getShortDescription() }}</p>
@@ -45,11 +56,15 @@
             </a>
         </div>
         <div class="my-3">
-            <span class="">Deal postée par {{ deal.user.username }}</span>
-            <a class="text-decoration-none text-black float-end" href="{{ path('app_deal_info', {id: deal.id}) }}">
-                <button class="btn btn-primary">{{ deal.comments|length }}  <i class="bi bi-chat-left-text"></i></button>
-                <button class="btn btn-primary">Voir le deal  <i class="bi bi-box-arrow-up-right"></i></button>
-            </a>
+            <span>Deal postée par {{ deal.user.username }}</span>
+            <div class="text-decoration-none text-black float-end">
+                <a href="{{ path('app_deal_info', {id: deal.id}) }}">
+                    <button class="btn btn-primary">{{ deal.comments|length }}  <i class="bi bi-chat-left-text"></i></button>
+                </a>
+                <a href="{{ deal.link }}">
+                    <button class="btn btn-primary" href="{{ deal.link }}">Voir le deal  <i class="bi bi-box-arrow-up-right"></i></button>
+                </a>
+            </div>
         </div>
     </div>
 </div>
