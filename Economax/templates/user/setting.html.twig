@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramètres{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-2">
+        <div class="card">
+            <h1 class="card-header">Paramètres</h1>
+
+            <div class="m-3">
+                {{ form_start(form) }}
+                <div class="mb-3">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            {{ form_row(form.imageFile) }}
+                            <small class="form-text text-muted">Formats d'image acceptés : JPG, JPEG, PNG</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form_row(form.username) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_row(form.email) }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form_row(form.description) }}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Mettre à jour</button>
+
+                {{ form_end(form) }}
+
+                <a href="#" class="btn btn-danger mt-3">Supprimer le compte</a>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

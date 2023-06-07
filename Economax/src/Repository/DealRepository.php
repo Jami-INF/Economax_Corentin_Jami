@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Deal;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -70,7 +71,6 @@ class DealRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
-
     public function findAllHotToday()
     {
         $qb = $this->createQueryBuilder('d')
@@ -85,5 +85,61 @@ class DealRepository extends ServiceEntityRepository
         ;
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function findMostVotedDealByUser(?User $user) : Deal
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('d')
+            ->leftJoin('d.temperatures', 't')
+            ->addSelect('SUM(t.value) AS HIDDEN sumValue')
+            ->groupBy('d')
+            ->orderBy('sumValue', 'DESC')
+            ->setMaxResults(1)
+            ->where('d.user = :user')
+            ->setParameter('user', $user)
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    public function findNumberOfDealsBecommingHotByUser(?User $user)
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('d')
+            ->leftJoin('d.temperatures', 't')
+            ->addSelect('SUM(t.value) AS HIDDEN sumValue')
+            ->groupBy('d')
+            ->having('sumValue >= 100')
+            ->where('d.user = :user')
+            ->setParameter('user', $user)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+    public function findDealsPostedByUserInLastYear(?User $user)
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('d')
+            ->where('d.user = :user')
+            ->andWhere('d.createdAt > :date')
+            ->setParameter('user', $user)
+            ->setParameter('date', new \DateTime('-1 year'))
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findNumberOfVoteByUser(?User $user)
+    {
+
+        $qb = $this->createQueryBuilder('d')
+            ->select('COUNT(t.id) AS nbVotes')
+            ->leftJoin('d.temperatures', 't')
+            ->where('d.user = :user')
+            ->setParameter('user', $user)
+        ;
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

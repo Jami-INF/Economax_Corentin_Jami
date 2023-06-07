@@ -56,14 +56,11 @@ class Deal
     #[ORM\OneToMany(mappedBy: 'deal', targetEntity: Comment::class)]
     private Collection $comments;
 
-    #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName', size: 'imageSize')]
+    #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'imageName')]
     private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
     private ?string $imageName = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?int $imageSize = null;
 
     #[ORM\OneToMany(mappedBy: 'deal', targetEntity: Temperature::class)]
     private Collection $temperatures;
@@ -219,16 +216,6 @@ class Deal
     public function getImageName(): ?string
     {
         return $this->imageName;
-    }
-
-    public function setImageSize(?int $imageSize): void
-    {
-        $this->imageSize = $imageSize;
-    }
-
-    public function getImageSize(): ?int
-    {
-        return $this->imageSize;
     }
 
     /**

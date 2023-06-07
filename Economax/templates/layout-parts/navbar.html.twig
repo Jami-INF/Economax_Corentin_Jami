@@ -31,15 +31,41 @@
                         <li><a class="dropdown-item" href="{{ path("app_deal_create", {type: "promo"}) }}">Poster un code promo</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path("app_logout") }}">Deconexion</a>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
-                </li>
             {% endif %}
 
         </ul>
+
+        <!-- Right elements -->
+        <div class="navbar-nav ms-auto">
+            {% if app.user %}
+                <!-- Avatar -->
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {% if app.user.imageName == null %}
+                            <img src="{{ asset('images/avatars/default-avatar.png') }}" class="rounded-circle" height="35" alt="Avatar" loading="lazy">
+                        {% else %}
+                            <img src="{{ asset('images/avatars/' ~ app.user.imageName) }}" class="rounded-circle" height="35" alt="Avatar" loading="lazy"/>
+                        {% endif %}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_user_preview', {id: app.user.id}) }}">Mon profil</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{{ path('app_user_settings', {id: app.user.id}) }}">Paramètres</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="dropdown-item" href="{{ path("app_logout") }}">Déconnexion</a>
+                        </li>
+                    </ul>
+                </div>
+            {% else %}
+                <li class="nav-item m-1">
+                    <a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
+                </li>
+            {% endif %}
+        </div>
+        <!-- Right elements -->
+
     </div>
 </nav>

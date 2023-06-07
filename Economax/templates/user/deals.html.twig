@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deal{% endblock %}
+
+{% block header %}
+    {{ parent() }}
+    {%  include "layout-parts/navbar-user.html.twig" %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        {% for deal in deals %}
+            {% include 'layout-parts/deal-card.html.twig' %}
+        {% endfor %}
+    </div>
+{% endblock %}

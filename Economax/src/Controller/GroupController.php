@@ -31,16 +31,6 @@ class GroupController extends AbstractController
         ]);
     }
 
-    #[Route('/group/{id}', name: 'app_group_show')]
-    public function show(?Group $group): Response
-    {
-        $deal = $this->dealRepository->findBy(['groups' => $group]);
-
-        return $this->render('group/show.html.twig', [
-            'deals' => $deal,
-        ]);
-    }
-
     #[Route('/group/create', name: 'app_group_create')]
     public function create(Request $request): Response
     {
@@ -52,9 +42,18 @@ class GroupController extends AbstractController
 
             return $this->redirectToRoute('app_group');
         }
-
         return $this->render('group/form.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/group/{id}', name: 'app_group_show')]
+    public function show(?Group $group): Response
+    {
+        $deal = $this->dealRepository->findBy(['groups' => $group]);
+
+        return $this->render('group/show.html.twig', [
+            'deals' => $deal,
         ]);
     }
 

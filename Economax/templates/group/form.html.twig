@@ -3,9 +3,12 @@
 {% block title %}Deal{% endblock %}
 
 {% block body %}
-    {{ form_start(form) }}
-    {{ form_rest(form) }}
-    <input type="submit"/>
+    <div class="container">
+        <h1>Groupes</h1>
+        {{ form_start(form) }}
+        {{ form_rest(form) }}
+        <input type="submit"/>
 
-    {{ form_end(form) }}
+        {{ form_end(form) }}
+    </div>
 {% endblock %}
