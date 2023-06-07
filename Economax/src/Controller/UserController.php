@@ -23,9 +23,7 @@ class UserController extends AbstractController
     #[Route('/user/{id}/preview', name: 'app_user_preview')]
     public function preview(?User $user): Response
     {
-        //TODO : render stats about user
-        // find average votes per deal on 1 year
-
+        // Stats
         $dealWithMostVote = $this->dealRepository->findMostVotedDealByUser($user);
         $vote = $dealWithMostVote->getSumTemperatures();
 
@@ -33,25 +31,17 @@ class UserController extends AbstractController
         $nbDeal = $user->getDeals()->count();
         $percentDealHot = $nbDealHot / $nbDeal * 100;
 
-        // find all deal posted by user and who was posted in the last 1 year
         $dealsVote = $this->dealRepository->findDealsPostedByUserInLastYear($user);
-        // find average votes per deal on 1 year
         foreach ($dealsVote as $deal) {
             $vote += $deal->getSumTemperatures();
         }
         $averageVote = $vote / count($dealsVote);
 
-        // find number of vote by user
+        // Badges
         $nbVote = $this->dealRepository->findNumberOfVoteByUser($user)["nbVotes"];
-
-        // find number of comment by user
         $nbComment = $user->getComment()->count();
-
-        // find number of deal by user
         $nbDeal = $user->getDeals()->count();
 
-
-        //TODO : render user badges
         return $this->render('user/preview.html.twig', [
             'user' => $user,
             'vote' => $vote,
