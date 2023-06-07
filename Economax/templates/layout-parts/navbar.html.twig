@@ -31,10 +31,6 @@
                         <li><a class="dropdown-item" href="{{ path("app_deal_create", {type: "promo"}) }}">Poster un code promo</a></li>
                     </ul>
                 </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
-                </li>
             {% endif %}
 
         </ul>
@@ -63,6 +59,10 @@
                         </li>
                     </ul>
                 </div>
+            {% else %}
+                <li class="nav-item m-1">
+                    <a class="nav-link" href="{{ path("app_login") }}">Connexion</a>
+                </li>
             {% endif %}
         </div>
         <!-- Right elements -->
