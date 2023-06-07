@@ -4,29 +4,37 @@
 
 {% block body %}
     <div class="container">
-        <div>
-            <a class="btn btn-success" href="{{ path("app_group_create") }}">Créer un groupe</a>
+
+        <div class="card my-4">
+            <div class="card-body">
+                <h3>Gestion des groupes</h3>
+
+                <table class="table my-4">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Lien</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    {% for group in groups %}
+                        <tr>
+                            <td>
+                                <a class = "text-decoration-none" href="{{ path("app_group_show", {id: group.id}) }}">{{ group.name }}</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary" href="{{ path("app_group_show", {id: group.id}) }}">Accéder <i class="bi bi-box-arrow-up-right"></i></a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" href="{{ path("app_group_delete", {id: group.id}) }}">Supprimer</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <div>
+                    <a class="btn btn-primary float-end" href="{{ path("app_group_create") }}">Ajouter un groupe</a>
+                </div>
+            </div>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Groupes</th>
-                </tr>
-            </thead>
-            <tr>
-                <th>Nom</th>
-                <th>Actions</th>
-            </tr>
-            {% for group in groups %}
-                <tr>
-                    <td>
-                        <a href="{{ path("app_group_show", {id: group.id}) }}">{{ group.name }}</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-danger" href="{{ path("app_group_delete", {id: group.id}) }}">Supprimer</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
     </div>
 {% endblock %}
