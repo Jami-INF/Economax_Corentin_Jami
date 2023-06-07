@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\DealRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,7 @@ class UserController extends AbstractController
 
     public function __construct(
         protected UserRepository $userRepository,
+        protected DealRepository $dealRepository,
     )
     {
     }
@@ -22,9 +24,42 @@ class UserController extends AbstractController
     public function preview(?User $user): Response
     {
         //TODO : render stats about user
+        // find average votes per deal on 1 year
+
+        $dealWithMostVote = $this->dealRepository->findMostVotedDealByUser($user);
+        $vote = $dealWithMostVote->getSumTemperatures();
+
+        $nbDealHot = $this->dealRepository->findNumberOfDealsBecommingHotByUser($user);
+        $nbDeal = $user->getDeals()->count();
+        $percentDealHot = $nbDealHot / $nbDeal * 100;
+
+        // find all deal posted by user and who was posted in the last 1 year
+        $dealsVote = $this->dealRepository->findDealsPostedByUserInLastYear($user);
+        // find average votes per deal on 1 year
+        foreach ($dealsVote as $deal) {
+            $vote += $deal->getSumTemperatures();
+        }
+        $averageVote = $vote / count($dealsVote);
+
+        // find number of vote by user
+        $nbVote = $this->dealRepository->findNumberOfVoteByUser($user)["nbVotes"];
+
+        // find number of comment by user
+        $nbComment = $user->getComment()->count();
+
+        // find number of deal by user
+        $nbDeal = $user->getDeals()->count();
+
+
         //TODO : render user badges
         return $this->render('user/preview.html.twig', [
             'user' => $user,
+            'vote' => $vote,
+            'percentDealHot' => $percentDealHot,
+            'averageVote' => $averageVote,
+            'nbVote' => $nbVote,
+            'nbComment' => $nbComment,
+            'nbDeal' => $nbDeal,
         ]);
     }
 
@@ -67,6 +102,7 @@ class UserController extends AbstractController
 
         return $this->render('user/setting.html.twig', [
             'form' => $form,
+            'user' => $user,
         ]);
     }
 }

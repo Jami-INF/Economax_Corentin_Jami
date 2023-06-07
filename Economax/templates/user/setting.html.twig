@@ -6,9 +6,36 @@
 
     <div class="example-wrapper">
         <h1>Paramètres</h1>
+
         {{ form_start(form) }}
-        {{ form_rest(form) }}
+        <div class="mb-3">
+            <div class="d-flex align-items-center">
+                <div class="ms-3">
+                    {{ form_row(form.imageFile) }}
+                    <small class="form-text text-muted">Formats d'image acceptés : JPG, JPEG, PNG</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.username) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.email) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_row(form.description) }}
+        </div>
+
         <button type="submit" class="btn btn-primary">Mettre à jour</button>
+
         {{ form_end(form) }}
+
+        <a href="#" class="btn btn-danger mt-3">Supprimer le compte</a>
+
     </div>
+
+
 {% endblock %}
