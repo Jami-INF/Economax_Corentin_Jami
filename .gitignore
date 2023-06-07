@@ -260,6 +260,3 @@ Temporary Items
 /web/js/
 
 # End of https://www.toptal.com/developers/gitignore/api/symfony,intellij,macos
-
-
-/.docker
