@@ -87,6 +87,14 @@ class DealRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findAllFavorite(User $user)
+    {
+        $qb = $this->createQueryBuilder('d')
+
+        ;
+        return $qb->getQuery()->getResult();
+    }
+
     public function findMostVotedDealByUser(?User $user) : Deal
     {
         $qb = $this->createQueryBuilder('d')

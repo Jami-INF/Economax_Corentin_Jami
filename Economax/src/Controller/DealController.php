@@ -46,7 +46,7 @@ class DealController extends AbstractController
 
         return $this->render('deal/index.html.twig', [
             'deals' => $deals,
-            'dealsHot' => $dealsHot
+            'dealsHot' => $dealsHot,
         ]);
     }
 
@@ -169,6 +169,15 @@ class DealController extends AbstractController
             $this->temperatureRepository->save($temperature);
         }
         return new JsonResponse(['temperature' => $deal->getSumTemperatures()]);
+    }
+
+    #[Route('/deal/edit/{id}/favorite/add', name: 'addfavorite')]
+    public function addFavorite(Deal $deal)
+    {
+        //ajoute le deal a la liste des favoris de l'utilisateur
+        $user = $this->security->getUser();
+        $user->addFavorite($deal);
+        $this->userRepository->save($user);
     }
 
     #[Route('/deal/delete/{id}', name: 'app_deal_delete')]

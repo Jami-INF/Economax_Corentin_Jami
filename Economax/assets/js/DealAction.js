@@ -5,6 +5,9 @@ $(document).ready(function() {
     $('.decrease-temperature').click(function () {
         updateTemperature($(this).attr('id_deal'), "decrease");
     });
+    $('.add-favorite').click(function () {
+        addFavorite($(this).attr('id_deal'));
+    });
 
     function updateTemperature(dealId, type) {
         let url = "";
@@ -17,6 +20,16 @@ $(document).ready(function() {
             method: 'POST',
             success: function (data) {
                 $('#temp-' + dealId).text(data.temperature+"°");
+            }
+        });
+    }
+    function addFavorite(dealId) {
+        let url = "/deal/edit/" + dealId + "/favorite/add";
+        $.ajax({
+            url: url,
+            method: 'POST',
+            success: function (data) {
+                $('#favorite-' + dealId).setAttribute("class", "fas fa-heart");
             }
         });
     }

@@ -8,8 +8,10 @@
 {% endblock %}
 
 {% block body %}
-
-    <div class="example-wrapper">
-        <h1>Deal Sauvegardé</h1>
+    <div class="container">
+        {% for deal in deals %}
+            {% include 'layout-parts/deal-card.html.twig' %}
+        {% endfor %}
     </div>
 {% endblock %}
+
