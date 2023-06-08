@@ -62,12 +62,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\OneToMany(mappedBy: 'userFavorite', targetEntity: Deal::class)]
+    private Collection $favorites;
 
     public function __construct()
     {
         $this->comment = new ArrayCollection();
         $this->deals = new ArrayCollection();
         $this->temperatures = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
     }
 
     /**
@@ -315,6 +318,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * @return Collection<int, Deal>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Deal $favorite): self
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites->add($favorite);
+            $favorite->setUserFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavorite(Deal $favorite): self
+    {
+        if ($this->favorites->removeElement($favorite)) {
+            // set the owning side to null (unless already changed)
+            if ($favorite->getUserFavorite() === $this) {
+                $favorite->setUserFavorite(null);
+            }
+        }
+
+        return $this;
     }
 
 }

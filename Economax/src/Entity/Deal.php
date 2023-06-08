@@ -65,6 +65,9 @@ class Deal
     #[ORM\OneToMany(mappedBy: 'deal', targetEntity: Temperature::class)]
     private Collection $temperatures;
 
+    #[ORM\ManyToOne(inversedBy: 'favorites')]
+    private ?User $userFavorite = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -259,6 +262,18 @@ class Deal
             $sum += $temperature->getValue();
         }
         return $sum;
+    }
+
+    public function getUserFavorite(): ?User
+    {
+        return $this->userFavorite;
+    }
+
+    public function setUserFavorite(?User $userFavorite): self
+    {
+        $this->userFavorite = $userFavorite;
+
+        return $this;
     }
 
 }
