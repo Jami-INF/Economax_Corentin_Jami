@@ -53,4 +53,13 @@ class UserRepository extends ServiceEntityRepository implements UserLoaderInterf
             ->setParameter('query', $usernameOrEmail)
             ->getOneOrNullResult();
     }
+
+    public function findAllAdmin()
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles LIKE :role')
+            ->setParameter('role', '%ROLE_ADMIN%')
+            ->getQuery()
+            ->getResult();
+    }
 }

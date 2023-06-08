@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+    <body>
+        <h1>Bonjour,</h1>
+        <p>Un deal a été signalé comme étant inapproprié.</p>
+        <p>Voici les informations du deal :</p>
+        <ul>
+            <li>Titre : {{ deal.title }}</li>
+            <li>Description : {{ deal.description }}</li>
+            <li>URL : {{ deal.link }}</li>
+            <li>Créé par : {{ deal.user.username }}</li>
+        </ul>
+    </body>
+</html>
+
