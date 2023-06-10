@@ -5,8 +5,8 @@ $(document).ready(function() {
     $('.decrease-temperature').click(function () {
         updateTemperature($(this).attr('id_deal'), "decrease");
     });
-    $('.add-favorite').click(function () {
-        addFavorite($(this).attr('id_deal'));
+    $('.interact-favorite').click(function () {
+        interactFavorite($(this).attr('id_deal'));
     });
 
     function updateTemperature(dealId, type) {
@@ -23,13 +23,38 @@ $(document).ready(function() {
             }
         });
     }
+
+    function interactFavorite(dealId) {
+        let iconElement = document.getElementById("favo-deal-" + dealId);
+        if(iconElement.classList.contains("bi-heart")) {
+            addFavorite(dealId);
+        } else {
+            removeFavorite(dealId);
+        }
+    }
     function addFavorite(dealId) {
         let url = "/deal/edit/" + dealId + "/favorite/add";
         $.ajax({
             url: url,
             method: 'POST',
             success: function (data) {
-                $('#favorite-' + dealId).setAttribute("class", "fas fa-heart");
+                //console.log(data); // todo:popup
+                let iconElement = document.getElementById("favo-deal-" + dealId);
+                iconElement.classList.remove("bi-heart");
+                iconElement.classList.add("bi-heart-fill");
+            }
+        });
+    }
+    function removeFavorite(dealId) {
+        let url = "/deal/edit/" + dealId + "/favorite/remove";
+        $.ajax({
+            url: url,
+            method: 'POST',
+            success: function (data) {
+                //console.log(data); // todo:popup
+                let iconElement = document.getElementById("favo-deal-" + dealId);
+                iconElement.classList.remove("bi-heart-fill");
+                iconElement.classList.add("bi-heart");
             }
         });
     }

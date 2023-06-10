@@ -328,24 +328,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->favorites;
     }
 
-    public function addFavorite(Deal $favorite): self
+    public function addFavorite(Deal $favorite): void
     {
         if (!$this->favorites->contains($favorite)) {
-            $this->favorites->add($favorite);
-            $favorite->setUserFavorite($this);
+            $this->favorites[] = $favorite;
         }
-
-        return $this;
     }
 
-    public function removeFavorite(Deal $favorite): self
+    public function removeFavorite(Deal $favorite): void
     {
-        if ($this->favorites->removeElement($favorite)) {
-            if ($favorite->getUserFavorite() === $this) {
-                $favorite->setUserFavorite(null);
-            }
-        }
-        return $this;
+        $this->favorites->removeElement($favorite);
     }
 
     public function isFavorite(Deal $deal): bool

@@ -176,26 +176,33 @@ class DealController extends AbstractController
     #[Route('/deal/edit/{id}/favorite/add', name: 'addfavorite')]
     public function addFavorite(Deal $deal): Response
     {
-        //ajoute le deal a la liste des favoris de l'utilisateur si il ne l'est pas déja
         $user = $this->security->getUser();
-
         if($user == null){
-            return $this->redirectToRoute('app_login');
+            return new Response('Veuillez vous connecter pour ajouter un favoris');
         }
-        if($user->isFavorite($deal)){
-            $user->removeFavorite($deal);
-        }else{
-            $user->addFavorite($deal);
-        }
+        $user->addFavorite($deal);
         $this->userRepository->save($user);
-        return new Response('ok');
+        return new Response('Deal ajouté à vos favoris');
     }
+
+    #[Route('/deal/edit/{id}/favorite/remove', name: 'removefavorite')]
+    public function removeFavorite(Deal $deal): Response
+    {
+        $user = $this->security->getUser();
+        if($user == null){
+            return new Response('Veuillez vous connecter pour ajouter un favoris');
+        }
+        $user->removeFavorite($deal);
+        $this->userRepository->save($user);
+        return new Response('Deal supprimé de vos favoris');
+    }
+
+
 
     #[Route('/deal/delete/{id}', name: 'app_deal_delete')]
     public function delete(?Deal $deal): Response
     {
         $this->dealRepository->remove($deal);
-
         return $this->redirectToRoute('app_home');
     }
 
