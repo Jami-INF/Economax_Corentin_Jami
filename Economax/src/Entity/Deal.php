@@ -65,13 +65,15 @@ class Deal
     #[ORM\OneToMany(mappedBy: 'deal', targetEntity: Temperature::class)]
     private Collection $temperatures;
 
-    #[ORM\ManyToOne(inversedBy: 'favorites')]
-    private ?User $userFavorite = null;
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
+    private Collection $users;
+
 
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->temperatures = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -272,6 +274,33 @@ class Deal
     public function setUserFavorite(?User $userFavorite): self
     {
         $this->userFavorite = $userFavorite;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeFavorite($this);
+        }
 
         return $this;
     }

@@ -9,6 +9,7 @@ use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use App\Repository\DealRepository;
 use App\Repository\TemperatureRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -32,6 +33,7 @@ class DealController extends AbstractController
         protected DealRepository $dealRepository,
         protected CommentRepository $commentRepository,
         protected TemperatureRepository $temperatureRepository,
+        protected UserRepository $userRepository,
         Security $security
     )
     {
@@ -172,12 +174,21 @@ class DealController extends AbstractController
     }
 
     #[Route('/deal/edit/{id}/favorite/add', name: 'addfavorite')]
-    public function addFavorite(Deal $deal)
+    public function addFavorite(Deal $deal): Response
     {
-        //ajoute le deal a la liste des favoris de l'utilisateur
+        //ajoute le deal a la liste des favoris de l'utilisateur si il ne l'est pas déja
         $user = $this->security->getUser();
-        $user->addFavorite($deal);
+
+        if($user == null){
+            return $this->redirectToRoute('app_login');
+        }
+        if($user->isFavorite($deal)){
+            $user->removeFavorite($deal);
+        }else{
+            $user->addFavorite($deal);
+        }
         $this->userRepository->save($user);
+        return new Response('ok');
     }
 
     #[Route('/deal/delete/{id}', name: 'app_deal_delete')]

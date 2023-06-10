@@ -62,7 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'userFavorite', targetEntity: Deal::class)]
+    #[ORM\ManyToMany(targetEntity: Deal::class, inversedBy: 'users')]
     private Collection $favorites;
 
     public function __construct()
@@ -341,13 +341,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeFavorite(Deal $favorite): self
     {
         if ($this->favorites->removeElement($favorite)) {
-            // set the owning side to null (unless already changed)
             if ($favorite->getUserFavorite() === $this) {
                 $favorite->setUserFavorite(null);
             }
         }
-
         return $this;
+    }
+
+    public function isFavorite(Deal $deal): bool
+    {
+        return $this->favorites->contains($deal);
     }
 
 }
