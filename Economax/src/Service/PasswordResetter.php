@@ -11,36 +11,27 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class PasswordResetter
 {
-    private MailerInterface $mailer;
-    protected string $NO_REPLY_EMAIL = 'noreply@economax.com';
-
     public function __construct(
-        MailerInterface $mailer,
+        protected EmailSender $mailer,
         protected UserRepository $userRepository,
         protected UserPasswordHasherInterface  $passwordHasher
     )
     {
-        $this->mailer = $mailer;
     }
 
     public function sendPasswordResetEmail(User $user): bool
     {
-        $email = (new TemplatedEmail())
-            ->from($this->NO_REPLY_EMAIL)
-            ->to($user->getEmail())
-            ->subject('Réinitialisation de votre mot de passe')
-            ->htmlTemplate('emails/reset_password.html.twig')
-            ->context([
+        $email = $this->mailer->createTemplatedEmail(
+            null,
+            $user->getEmail(),
+            'Réinitialisation de votre mot de passe',
+            'emails/reset_password.html.twig',
+            [
                 'user' => $user
-            ]);
+            ]
+        );
 
-        try {
-            $this->mailer->send($email);
-
-            return true;
-        } catch (TransportExceptionInterface $e) {
-            return false;
-        }
+        return $this->mailer->sendEmail($email);
     }
     public function resetPassword(string $email): bool
     {
