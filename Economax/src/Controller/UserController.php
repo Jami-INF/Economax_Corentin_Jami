@@ -28,24 +28,30 @@ class UserController extends AbstractController
     public function preview(?User $user): Response
     {
         // Stats
-        $dealWithMostVote = $this->dealRepository->findMostVotedDealByUser($user);
-        $mostVote = $dealWithMostVote->getSumTemperatures();
+        if($user->getDeals()->count() > 0){
+            $dealWithMostVote = $this->dealRepository->findMostVotedDealByUser($user);
+            $mostVote = $dealWithMostVote->getSumTemperatures();
 
-        $dealsHot = $this->dealRepository->findNumberOfDealsBecommingHotByUser($user);
-        $nbDealHot = 0;
-        foreach ($dealsHot as $deal) {
-            $nbDealHot += 1;
+            $dealsHot = $this->dealRepository->findNumberOfDealsBecommingHotByUser($user);
+            $nbDealHot = 0;
+            foreach ($dealsHot as $deal) {
+                $nbDealHot += 1;
+            }
+            $nbDeal = $user->getDeals()->count();
+            $percentDealHot = $nbDealHot / $nbDeal * 100;
+
+            $dealsVote = $this->dealRepository->findDealsPostedByUserInLastYear($user);
+            $vote = 0;
+            foreach ($dealsVote as $deal) {
+                $vote += $deal->getSumTemperatures();
+            }
+            $averageVote = $vote / count($dealsVote);
+        } else {
+            $mostVote = 0;
+            $percentDealHot = 0;
+            $averageVote = 0;
         }
-        $nbDeal = $user->getDeals()->count();
-        $percentDealHot = $nbDealHot / $nbDeal * 100;
-
-        $dealsVote = $this->dealRepository->findDealsPostedByUserInLastYear($user);
-        $vote = 0;
-        foreach ($dealsVote as $deal) {
-            $vote += $deal->getSumTemperatures();
-        }
-        $averageVote = $vote / count($dealsVote);
-
+        
         // Badges
         $nbVote = $this->dealRepository->findNumberOfVoteByUser($user)["nbVotes"];
         $nbComment = $user->getComment()->count();
