@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\TemperatureEnum;
 use App\Repository\AlertRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,8 +17,8 @@ class Alert
     #[ORM\Column(length: 255)]
     private ?string $keyWord = null;
 
-    #[ORM\Column]
-    private ?int $temperature = null;
+    #[ORM\Column(enumType: TemperatureEnum::class)]
+    private ?TemperatureEnum $temperature = TemperatureEnum::ZERO;
 
     #[ORM\Column]
     private ?bool $isNotify = null;
@@ -43,12 +44,12 @@ class Alert
         return $this;
     }
 
-    public function getTemperature(): ?int
+    public function getTemperature(): ?TemperatureEnum
     {
         return $this->temperature;
     }
 
-    public function setTemperature(int $temperature): self
+    public function setTemperature(TemperatureEnum $temperature): self
     {
         $this->temperature = $temperature;
 

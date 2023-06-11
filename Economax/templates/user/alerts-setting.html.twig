@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alertes{% endblock %}
+
+{% block header %}
+    {{ parent() }}
+    {%  include "layout-parts/navbar-user.html.twig" %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-2">
+        <div class="card mb-2">
+            <div class="btn-group w-100">
+                <a class="btn btn-light text-dark btn-toggle" href="{{ path('app_user_alerts', {id: app.user.id}) }}">
+                    <i class="bi bi-bell"></i> Fil d'alertes
+                </a>
+                <a class="btn btn-light text-dark btn-toggle" href="{{ path('app_user_alerts_setting', {id: app.user.id}) }}">
+                    <i class="bi bi-gear"></i> Gérer mes alertes
+                </a>
+            </div>
+        </div>
+        <div class="card mb-2">
+            <div class="card-body">
+                <p>Nouvelle alerte</p>
+                {{ form_start(form) }}
+                <div class="mb-3">
+                    {{ form_row(form.keyWord) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.temperature) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.isNotify) }}
+                </div>
+                {{ form_rest(form) }}
+                <button type="submit" class="btn btn-primary">Créer une alerte</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <p>Mes alertes sauvegardés</p>
+                {% if alerts is empty %}
+                    <p>Vous n'avez pas d'alerte sauvegardé</p>
+                {% else %}
+                    {% for alert in alerts %}
+                        <div>
+                            <span>{{ alert.keyWord }}</span>
+                            <a class="btn btn-danger" href="{{ path('app_user_alerts_remove', {id : app.user.id ,alert: alert.id}) }}">Supprimer</a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

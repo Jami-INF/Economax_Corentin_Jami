@@ -21,7 +21,7 @@ class AlertRepository extends ServiceEntityRepository
         parent::__construct($registry, Alert::class);
     }
 
-    public function save(Alert $entity, bool $flush = false): void
+    public function save(Alert $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class AlertRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Alert $entity, bool $flush = false): void
+    public function remove(Alert $entity, bool $flush = true): void
     {
         $this->getEntityManager()->remove($entity);
 

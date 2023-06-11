@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Alert;
 use App\Entity\User;
+use App\Form\AlertType;
 use App\Form\UserType;
+use App\Repository\AlertRepository;
 use App\Repository\DealRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,6 +20,7 @@ class UserController extends AbstractController
     public function __construct(
         protected UserRepository $userRepository,
         protected DealRepository $dealRepository,
+        protected AlertRepository $alertRepository
     )
     {
     }
@@ -78,10 +82,41 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/{id}/alerts', name: 'app_user_alerts')]
-    public function alerts(): Response
+    public function alerts(?User $user, Request $request): Response
     {
+        // TODO : find all deals in function of alerts
+        $deals = $this->dealRepository->findAll();
+
         return $this->render('user/alerts.html.twig', [
-            'controller_name' => 'UserController',
+            'deals' => $deals,
+        ]);
+    }
+    #[Route('/user/{id}/alerts/setting', name: 'app_user_alerts_setting')]
+    public function alertsSetting(?User $user, Request $request): Response
+    {
+        $alert = new Alert();
+        $form = $this->createForm(AlertType::class, $alert);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $alert->setUser($user);
+            $this->alertRepository->save($alert);
+        }
+
+        $alerts = $user->getAlerts();
+
+        return $this->render('user/alerts-setting.html.twig', [
+            'alerts' => $alerts,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/user/{id}/alerts/remove/{alert}', name: 'app_user_alerts_remove')]
+    public function removeAlert(?User $user, ?Alert $alert): Response
+    {
+        $this->alertRepository->remove($alert);
+
+        return $this->redirectToRoute('app_user_alerts', [
+            'id' => $user->getId(),
         ]);
     }
 
