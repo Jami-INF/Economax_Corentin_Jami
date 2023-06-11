@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+    <body>
+        <h1>Bonjour,</h1>
+        <p>Voici vos alertes du jour :</p>
+        <p>Nombre de deals : {{ deals|length }}</p>
+        {% for deal in deals %}
+            <ul>
+                <li>Titre : {{ deal.title }}</li>
+                <li>Description : {{ deal.description }}</li>
+                <li>Lien : {{ deal.link }}</li>
+            </ul>
+        {% endfor %}
+
+
+    </body>
+</html>
+
