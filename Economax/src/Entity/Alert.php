@@ -56,6 +56,11 @@ class Alert
         return $this;
     }
 
+    public function getTemperatureValue(): ?int
+    {
+        return $this->temperature->getValue();
+    }
+
     public function isIsNotify(): ?bool
     {
         return $this->isNotify;

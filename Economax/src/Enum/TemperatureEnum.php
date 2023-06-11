@@ -18,4 +18,14 @@ enum TemperatureEnum : int
             self::BURNING => 'Temperature minimun de 200°',
         };
     }
+
+    public function getValue(): int
+    {
+        return match ($this) {
+            self::ZERO => 0,
+            self::FIFTY => 50,
+            self::HOT => 100,
+            self::BURNING => 200,
+        };
+    }
 }

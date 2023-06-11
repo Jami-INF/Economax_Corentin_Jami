@@ -84,8 +84,20 @@ class UserController extends AbstractController
     #[Route('/user/{id}/alerts', name: 'app_user_alerts')]
     public function alerts(?User $user, Request $request): Response
     {
-        // TODO : find all deals in function of alerts
-        $deals = $this->dealRepository->findAll();
+        $alerts = $user->getAlerts();
+        $allDeals = $this->dealRepository->findAll();
+        $deals = [];
+        foreach ($alerts as $alert) {
+            foreach ($allDeals as $deal) {
+                if(preg_match("/{$alert->getKeyWord()}/i", $deal->getTitle()) ) {
+                    $alertTemp = $alert->getTemperatureValue();
+                    $dealTemp = $deal->getSumTemperatures();
+                    if($alertTemp <= $dealTemp) {
+                        $deals[] = $deal;
+                    }
+                }
+            }
+        }
 
         return $this->render('user/alerts.html.twig', [
             'deals' => $deals,
