@@ -22,8 +22,14 @@
                             {% else %}
                                 <span class="value text-primary" id="temp-{{ deal.id }}">{{ deal.getSumTemperatures() }}°</span>
                             {% endif %}
-
                             <button class="btn btn-danger btn-sm increase-temperature" id_deal="{{ deal.id }}">+</button>
+                            <a class="text-decoration-none text-black mx-3 fs-4 interact-favorite" id_deal="{{ deal.id }}">
+                                {% if app.user and deal in app.user.favorites %}
+                                    <i class="bi bi-heart-fill favorite-{{ deal.id }}" id="favo-deal-{{ deal.id }}"></i>
+                                {% else %}
+                                    <i class="bi bi-heart favorite-{{ deal.id }}" id="favo-deal-{{ deal.id }}"></i>
+                                {% endif %}
+                            </a>
                             <span class="float-end">{{ deal.comments|length }}  <i class="bi bi-chat-left-text"></i> <i class="bi bi-clock"></i> - Le {{ deal.createdAt|date('d M Y') }}</span>
                         </div>
 
@@ -121,5 +127,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('add_temp_deal') }}
+    {{ encore_entry_script_tags('deal_action') }}
 {% endblock %}

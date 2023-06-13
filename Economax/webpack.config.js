@@ -21,7 +21,7 @@ Encore
      * and one CSS file (e.g. app.scss) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addEntry('add_temp_deal', './assets/js/AddTempDeal.js')
+    .addEntry('deal_action', './assets/js/DealAction.js')
     .addEntry('form_preview', './assets/js/formPreview.js')
     Encore.enableSassLoader()
 

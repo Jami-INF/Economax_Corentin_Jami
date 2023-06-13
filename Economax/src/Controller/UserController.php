@@ -70,10 +70,11 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/{id}/deals/saved', name: 'app_user_deals_saved')]
-    public function dealsSaved(): Response
+    public function dealsSaved(?User $user): Response
     {
+        $dealFavorite = $user->getFavorites();
         return $this->render('user/deals_saved.html.twig', [
-            'controller_name' => 'UserController',
+            'deals' => $dealFavorite
         ]);
     }
 
