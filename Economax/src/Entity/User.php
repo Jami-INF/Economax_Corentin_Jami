@@ -62,6 +62,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Alert::class)]
+    private Collection $alerts;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isNotify = null;
+
     #[ORM\ManyToMany(targetEntity: Deal::class, inversedBy: 'users')]
     private Collection $favorites;
 
@@ -70,6 +76,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->comment = new ArrayCollection();
         $this->deals = new ArrayCollection();
         $this->temperatures = new ArrayCollection();
+        $this->alerts = new ArrayCollection();
         $this->favorites = new ArrayCollection();
     }
 
@@ -318,6 +325,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
+    }
+
+    /**
+<<<<<<< HEAD
+     * @return Collection<int, Alert>
+     */
+    public function getAlerts(): Collection
+    {
+        return $this->alerts;
+    }
+
+    public function addAlert(Alert $alert): self
+    {
+        if (!$this->alerts->contains($alert)) {
+            $this->alerts->add($alert);
+            $alert->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAlert(Alert $alert): self
+    {
+        if ($this->alerts->removeElement($alert)) {
+            // set the owning side to null (unless already changed)
+            if ($alert->getUser() === $this) {
+                $alert->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isIsNotify(): ?bool
+    {
+        return $this->isNotify;
+    }
+
+    public function setIsNotify(?bool $isNotify): self
+    {
+        $this->isNotify = $isNotify;
+
+        return $this;
     }
 
     /**

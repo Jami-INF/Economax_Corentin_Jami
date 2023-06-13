@@ -38,6 +38,12 @@
         <!-- Right elements -->
         <div class="navbar-nav ms-auto">
             {% if app.user %}
+                <li class="nav-item m-1 position-relative">
+                    <a class="nav-link" href="{{ path('app_user_alerts', {id: app.user.id}) }}"><i class="bi bi-bell-fill fs-5"></i></a>
+                    {% if app.user.isNotify %}
+                        <span class="notification-dot"></span>
+                    {% endif %}
+                </li>
                 <!-- Avatar -->
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">

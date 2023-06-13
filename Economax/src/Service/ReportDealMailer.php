@@ -12,15 +12,11 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ReportDealMailer
 {
-    private MailerInterface $mailer;
-    protected string $NO_REPLY_EMAIL = 'noreply@economax.com';
-
     public function __construct(
-        MailerInterface $mailer,
+        protected EmailSender $mailer,
         protected UserRepository $userRepository,
     )
     {
-        $this->mailer = $mailer;
     }
 
     public function sendReport(Deal $deal): bool
@@ -28,19 +24,17 @@ class ReportDealMailer
         $admin = $this->userRepository->findAllAdmin();
 
         foreach ($admin as $user) {
-            $email = (new TemplatedEmail())
-                ->from($this->NO_REPLY_EMAIL)
-                ->to($user->getEmail())
-                ->subject('Signalement d\'une annonce')
-                ->htmlTemplate('emails/report_deal.html.twig')
-                ->context([
+            $email = $this->mailer->createTemplatedEmail(
+                null,
+                $user->getEmail(),
+                'Signalement d\'une annonce',
+                'emails/report_deal.html.twig',
+                [
                     'deal' => $deal
-                ]);
+                ]
+            );
 
-            try {
-                $this->mailer->send($email);
-
-            } catch (TransportExceptionInterface $e) {
+            if(!$this->mailer->sendEmail($email)) {
                 return false;
             }
         }
