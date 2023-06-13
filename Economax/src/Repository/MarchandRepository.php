@@ -39,28 +39,14 @@ class MarchandRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Marchand[] Returns an array of Marchand objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findAllBySearch(float|bool|int|string|null $search)
+    {
+        $qb = $this->createQueryBuilder('m')
+            ->select('m')
+            ->where('m.name LIKE :search')
+            ->setParameter('search', '%' . $search . '%')
+        ;
+        return $qb->getQuery()->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?Marchand
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

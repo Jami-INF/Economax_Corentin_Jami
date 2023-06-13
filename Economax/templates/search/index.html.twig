@@ -7,25 +7,60 @@
     <div class="container">
         <div class="row">
             <div class="col-md-9">
-                {% for deal in deals %}
-                    {% include 'layout-parts/deal-card.html.twig' %}
-                {% endfor %}
+                {% if deals is empty %}
+                <div class="card my-4">
+                    <div class="card-body">
+                        <p class="">
+                            Il n'y a rien à afficher pour le moment :(
+                        </p>
+                    </div>
+                </div>
+                {% else %}
+                    {% for deal in deals %}
+                        {% include 'layout-parts/deal-card.html.twig' %}
+                    {% endfor %}
+                {% endif %}
             </div>
             <div class="col-md-3">
                 <div class="card my-4">
-                    <p class="card-header">Les marchands les plus hot du jour</p>
-{#                    {% if dealsHot is empty %}#}
-{#                        <div class="card-body">#}
-{#                            <p class="card-text">Aucun deal hot aujourd'hui</p>#}
-{#                        </div>#}
-{#                    {% else %}#}
-{#                        <div class="card-body">#}
-{#                            {% for deal in dealsHot %}#}
-{#                                {% include 'layout-parts/hotdeal-card.html.twig' %}#}
-{#                            {% endfor %}#}
-{#                        </div>#}
+                    <p class="card-header">Les marchands</p>
+                    {% if marchands is empty %}
+                        <div class="card-body">
+                            <p class="card-text">Aucun marchand correspondant</p>
+                        </div>
+                    {% else %}
+                        <div class="card-body">
+                            {% for marchand in marchands %}
+                                <div class="row">
+{#                                    <div class="col-md-4">#}
+{#                                        <img src="{{ asset('uploads/marchand/' ~ marchand.logo) }}" alt="" class="img-fluid">#}
+{#                                    </div>#}
+                                    <div class="col-md-8">
+                                        <p class="card-text">{{ marchand.name }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
 
-{#                    {% endif %}#}
+                    {% endif %}
+                </div>
+                <div class="card my-4">
+                    <p class="card-header">Les groupes</p>
+                    {% if marchands is empty %}
+                        <div class="card-body">
+                            <p class="card-text">Aucun groupe correspondant</p>
+                        </div>
+                    {% else %}
+                        <div class="card-body">
+                            {% for group in groups %}
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p class="card-text">{{ group.name }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
