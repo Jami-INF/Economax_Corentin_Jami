@@ -68,6 +68,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?bool $isNotify = null;
 
+    #[ORM\ManyToMany(targetEntity: Deal::class, inversedBy: 'users')]
+    private Collection $favorites;
 
     public function __construct()
     {
@@ -75,6 +77,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->deals = new ArrayCollection();
         $this->temperatures = new ArrayCollection();
         $this->alerts = new ArrayCollection();
+        $this->favorites = new ArrayCollection();
     }
 
     /**
@@ -325,6 +328,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
+<<<<<<< HEAD
      * @return Collection<int, Alert>
      */
     public function getAlerts(): Collection
@@ -364,6 +368,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isNotify = $isNotify;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Deal>
+     */
+    public function getFavorites(): Collection
+    {
+        return $this->favorites;
+    }
+
+    public function addFavorite(Deal $favorite): void
+    {
+        if (!$this->favorites->contains($favorite)) {
+            $this->favorites[] = $favorite;
+        }
+    }
+
+    public function removeFavorite(Deal $favorite): void
+    {
+        $this->favorites->removeElement($favorite);
+    }
+
+    public function isFavorite(Deal $deal): bool
+    {
+        return $this->favorites->contains($deal);
     }
 
 }

@@ -35,6 +35,7 @@ class DealController extends AbstractController
         protected DealRepository $dealRepository,
         protected CommentRepository $commentRepository,
         protected TemperatureRepository $temperatureRepository,
+        protected UserRepository $userRepository,
         protected ReportDealMailer $reportDealMailer,
         protected AlertChecker $alertChecker,
         Security $security
@@ -51,7 +52,7 @@ class DealController extends AbstractController
 
         return $this->render('deal/index.html.twig', [
             'deals' => $deals,
-            'dealsHot' => $dealsHot
+            'dealsHot' => $dealsHot,
         ]);
     }
 
@@ -179,11 +180,36 @@ class DealController extends AbstractController
         return new JsonResponse(['temperature' => $deal->getSumTemperatures()]);
     }
 
+    #[Route('/deal/edit/{id}/favorite/add', name: 'addfavorite')]
+    public function addFavorite(Deal $deal): Response
+    {
+        $user = $this->security->getUser();
+        if($user == null){
+            return new Response('Veuillez vous connecter pour ajouter un favoris');
+        }
+        $user->addFavorite($deal);
+        $this->userRepository->save($user);
+        return new Response('Deal ajouté à vos favoris');
+    }
+
+    #[Route('/deal/edit/{id}/favorite/remove', name: 'removefavorite')]
+    public function removeFavorite(Deal $deal): Response
+    {
+        $user = $this->security->getUser();
+        if($user == null){
+            return new Response('Veuillez vous connecter pour ajouter un favoris');
+        }
+        $user->removeFavorite($deal);
+        $this->userRepository->save($user);
+        return new Response('Deal supprimé de vos favoris');
+    }
+
+
+
     #[Route('/deal/delete/{id}', name: 'app_deal_delete')]
     public function delete(?Deal $deal): Response
     {
         $this->dealRepository->remove($deal);
-
         return $this->redirectToRoute('app_home');
     }
 
