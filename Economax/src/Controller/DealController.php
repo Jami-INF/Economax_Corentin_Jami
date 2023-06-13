@@ -10,6 +10,7 @@ use App\Repository\CommentRepository;
 use App\Repository\DealRepository;
 use App\Repository\TemperatureRepository;
 use App\Repository\UserRepository;
+use App\Service\AlertChecker;
 use App\Service\ReportDealMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -35,7 +36,7 @@ class DealController extends AbstractController
         protected CommentRepository $commentRepository,
         protected TemperatureRepository $temperatureRepository,
         protected ReportDealMailer $reportDealMailer,
-        protected UserRepository $userRepository,
+        protected AlertChecker $alertChecker,
         Security $security
     )
     {
@@ -106,27 +107,7 @@ class DealController extends AbstractController
             } else {
                 $this->promoCodeRepository->save($deal);
             }
-
-            $allUsers = $this->userRepository->findAll();
-            $allDeals = $this->dealRepository->findAll();
-            foreach ($allUsers as $user) {
-                $userAlerts = $user->getAlerts();
-                foreach ($userAlerts as $alert) {
-                    foreach ($allDeals as $deal) {
-                        if (preg_match("/{$alert->getKeyWord()}/i", $deal->getTitle())) {
-                            $alertTemp = $alert->getTemperatureValue();
-                            $dealTemp = $deal->getSumTemperatures();
-                            if ($alertTemp <= $dealTemp) {
-                                // verifier si le deal date d'aujourd'hui
-                                if($deal->getCreatedAt()->format('Y-m-d') === date('Y-m-d')) {
-                                    $user->setIsNotify(true);
-                                    $this->userRepository->save($user);
-                                }
-                                }
-                            }
-                        }
-                    }
-                }
+            $this->alertChecker->checkAlertsByDeal($deal);
 
             return $this->redirectToRoute('app_home');
         }
