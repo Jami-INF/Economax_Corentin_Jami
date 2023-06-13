@@ -22,21 +22,17 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ path("app_group") }}">Groupes</a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Poster
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ path("app_deal_create", {type: "deal"}) }}">Poster un deal</a></li>
-                        <li><a class="dropdown-item" href="{{ path("app_deal_create", {type: "promo"}) }}">Poster un code promo</a></li>
-                    </ul>
-                </li>
             {% endif %}
+
 
         </ul>
 
         <!-- Right elements -->
         <div class="navbar-nav ms-auto">
+            <form class="d-flex my-2" action="{{ path('app_search') }}" method="get">
+                <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
+                <input class="form-control" type="text" value="{{ app.request.get('search') }}" name="search" placeholder="Rechercher" aria-label="Search">
+            </form>
             {% if app.user %}
                 <!-- Avatar -->
                 <div class="nav-item dropdown">
