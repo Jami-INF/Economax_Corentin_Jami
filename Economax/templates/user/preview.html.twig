@@ -17,8 +17,8 @@
             <p>Nombre de deals postés : {{ user.deals|length }}</p>
             <p>Nombre de commentaires postés : {{ user.comment|length }}</p>
             <p>Note du deal posté le plus hot : {{ vote }} </p>
-            <p>Moyenne des notes des deals postés sur 1 an glissant : {{ averageVote }} </p>
-            <p>Pourcentage de deals postés devenus hot : {{ percentDealHot }}%</p>
+            <p>Moyenne des notes des deals postés sur 1 an glissant : {{ averageVote|round(0)  }} </p>
+            <p>Pourcentage de deals postés devenus hot : {{ percentDealHot|round(0) }}%</p>
 
             <h2>Badges <i class="bi bi-trophy"></i></h2>
 

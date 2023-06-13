@@ -10,6 +10,7 @@ use App\Repository\CommentRepository;
 use App\Repository\DealRepository;
 use App\Repository\TemperatureRepository;
 use App\Repository\UserRepository;
+use App\Service\ReportDealMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -34,6 +35,7 @@ class DealController extends AbstractController
         protected CommentRepository $commentRepository,
         protected TemperatureRepository $temperatureRepository,
         protected UserRepository $userRepository,
+        protected ReportDealMailer $reportDealMailer,
         Security $security
     )
     {
@@ -158,6 +160,8 @@ class DealController extends AbstractController
         return new JsonResponse(['temperature' => $deal->getSumTemperatures()]);
     }
 
+
+
     #[Route('/deal/edit/{id}/temperature/decrease', name: 'decrease')]
     public function removeTemperature(Deal $deal): JsonResponse
     {
@@ -203,6 +207,14 @@ class DealController extends AbstractController
     public function delete(?Deal $deal): Response
     {
         $this->dealRepository->remove($deal);
+        return $this->redirectToRoute('app_home');
+    }
+
+    #[Route('/deal/report/{id}', name: 'app_deal_report')]
+    public function report(?Deal $deal): Response
+    {
+        $this->reportDealMailer->sendReport($deal);
+
         return $this->redirectToRoute('app_home');
     }
 

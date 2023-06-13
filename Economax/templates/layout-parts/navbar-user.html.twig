@@ -5,7 +5,7 @@
                 <a class="nav-link" href="{{ path('app_user_preview', {id : app.user.id}) }}">Aperçu</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_user_deals', {id : app.user.id}) }}">Deal</a>
+                <a class="nav-link" href="{{ path('app_user_deals', {id : app.user.id}) }}">Deal ({{ app.user.deals|length }})</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('app_user_deals_saved', {id : app.user.id}) }}">Deal sauvegardé</a>

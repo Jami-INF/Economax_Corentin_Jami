@@ -83,7 +83,9 @@
                 {% if app.user == deal.user %}
                     <a href="{{ path('app_deal_delete', {id: deal.id}) }}" class="btn btn-danger">Expiré ?</a>
                 {% endif %}
-
+            </div>
+            <div class="card-footer">
+                <a href="{{ path('app_deal_report', {id: deal.id}) }}" class="text-decoration-none text-dark"><i class="bi bi-flag"></i> Signalez</a>
             </div>
         </div>
         <div class="card my-2">
