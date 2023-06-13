@@ -51,7 +51,7 @@ class UserController extends AbstractController
             $percentDealHot = 0;
             $averageVote = 0;
         }
-        
+
         // Badges
         $nbVote = $this->dealRepository->findNumberOfVoteByUser($user)["nbVotes"];
         $nbComment = $user->getComment()->count();
@@ -90,6 +90,8 @@ class UserController extends AbstractController
     #[Route('/user/{id}/alerts', name: 'app_user_alerts')]
     public function alerts(?User $user, Request $request): Response
     {
+        $user->setIsNotify(false);
+        $this->userRepository->save($user);
         $alerts = $user->getAlerts();
         $allDeals = $this->dealRepository->findAll();
         $deals = [];
@@ -118,6 +120,10 @@ class UserController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $alert->setUser($user);
             $this->alertRepository->save($alert);
+
+            return $this->redirectToRoute('app_user_alerts', [
+                'id' => $user->getId(),
+            ]);
         }
 
         $alerts = $user->getAlerts();

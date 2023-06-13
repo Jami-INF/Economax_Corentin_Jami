@@ -61,6 +61,11 @@ class Alert
         return $this->temperature->getValue();
     }
 
+    public function getTemperatureLabel(): ?string
+    {
+        return $this->temperature->getLabel();
+    }
+
     public function isIsNotify(): ?bool
     {
         return $this->isNotify;

@@ -36,8 +36,8 @@
                     <p>Vous n'avez pas d'alerte sauvegardé</p>
                 {% else %}
                     {% for alert in alerts %}
-                        <div>
-                            <span>{{ alert.keyWord }}</span>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>{{ alert.keyWord }} - {{ alert.getTemperatureLabel }}</span>
                             <a class="btn btn-danger" href="{{ path('app_user_alerts_remove', {id : app.user.id ,alert: alert.id}) }}">Supprimer</a>
                         </div>
                     {% endfor %}

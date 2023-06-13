@@ -15,3 +15,13 @@ body {
     width: 5.25em;
     height: 5.25em;
 }
+
+.notification-dot {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+}

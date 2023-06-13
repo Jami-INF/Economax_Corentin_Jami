@@ -65,6 +65,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Alert::class)]
     private Collection $alerts;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isNotify = null;
+
 
     public function __construct()
     {
@@ -347,6 +350,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $alert->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isIsNotify(): ?bool
+    {
+        return $this->isNotify;
+    }
+
+    public function setIsNotify(?bool $isNotify): self
+    {
+        $this->isNotify = $isNotify;
 
         return $this;
     }
