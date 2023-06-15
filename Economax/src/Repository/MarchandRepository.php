@@ -21,7 +21,7 @@ class MarchandRepository extends ServiceEntityRepository
         parent::__construct($registry, Marchand::class);
     }
 
-    public function save(Marchand $entity, bool $flush = false): void
+    public function save(Marchand $entity, bool $flush = true): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class MarchandRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Marchand $entity, bool $flush = false): void
+    public function remove(Marchand $entity, bool $flush = true): void
     {
         $this->getEntityManager()->remove($entity);
 
