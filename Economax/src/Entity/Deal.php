@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\SoftDeleteable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[SoftDeleteable(fieldName: 'expireAt', timeAware: false)]
@@ -28,6 +29,7 @@ class Deal
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['deal:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
@@ -40,9 +42,11 @@ class Deal
     private ?string $promoCode = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['deal:read'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['deal:read'])]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'deals')]
@@ -264,18 +268,6 @@ class Deal
             $sum += $temperature->getValue();
         }
         return $sum;
-    }
-
-    public function getUserFavorite(): ?User
-    {
-        return $this->userFavorite;
-    }
-
-    public function setUserFavorite(?User $userFavorite): self
-    {
-        $this->userFavorite = $userFavorite;
-
-        return $this;
     }
 
     /**
