@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -30,9 +31,10 @@ class UserType extends AbstractType
                     'class' => 'form-control',
                 ],
             ])
-            ->add('imageFile', VichImageType::class, [
-                'required' => false,
+            ->add('avatar', FileType::class, [
                 'label' => 'Avatar',
+                'required' => false,
+                'mapped' => false,
                 'attr' => [
                     'class' => 'form-control',
                 ],

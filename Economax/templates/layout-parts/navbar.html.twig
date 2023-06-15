@@ -47,10 +47,10 @@
                 <!-- Avatar -->
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {% if app.user.imageName == null %}
+                        {% if app.user.avatar == null %}
                             <img src="{{ asset('images/avatars/default-avatar.png') }}" class="rounded-circle" height="35" alt="Avatar" loading="lazy">
                         {% else %}
-                            <img src="{{ asset('images/avatars/' ~ app.user.imageName) }}" class="rounded-circle" height="35" alt="Avatar" loading="lazy"/>
+                            <img src="{{ asset('images/avatars/' ~ app.user.avatar) }}" class="rounded-circle" height="35" alt="Avatar" loading="lazy"/>
                         {% endif %}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
