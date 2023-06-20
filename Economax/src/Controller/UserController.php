@@ -10,6 +10,7 @@ use App\Repository\AlertRepository;
 use App\Repository\DealRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -158,7 +159,24 @@ class UserController extends AbstractController
         //TODO: button to delete account and render anonymous user
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if($form->isSubmitted() && $form->isValid()) {
+            $avatar = $form->get('avatar')->getData();
+            if($avatar){
+                $originalFilename = pathinfo($avatar->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$avatar->guessExtension();
+                try {
+                    $avatar->move(
+                        $this->getParameter('avatar_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    return $this->redirectToRoute('app_user_settings', [
+                        'id' => $user->getId(),
+                    ]);
+                }
+                $user->setAvatar($newFilename);
+            }
+
             $this->userRepository->save($user);
         }
 

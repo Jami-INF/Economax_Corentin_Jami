@@ -53,14 +53,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[Vich\UploadableField(mapping: 'avatars', fileNameProperty: 'imageName')]
-    private ?File $imageFile = null;
-
     #[ORM\Column(nullable: true)]
-    private ?string $imageName = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
+    private ?string $avatar = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Alert::class)]
     private Collection $alerts;
@@ -291,44 +285,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function setImageFile(?File $imageFile = null): void
+    public function setAvatar(?string $avatar): void
     {
-        $this->imageFile = $imageFile;
-
-        if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
-        }
+        $this->avatar = $avatar;
     }
 
-    public function getImageFile(): ?File
+    public function getAvatar(): ?string
     {
-        return $this->imageFile;
-    }
-
-    public function setImageName(?string $imageName): void
-    {
-        $this->imageName = $imageName;
-    }
-
-    public function getImageName(): ?string
-    {
-        return $this->imageName;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
+        return $this->avatar;
     }
 
     /**
-<<<<<<< HEAD
      * @return Collection<int, Alert>
      */
     public function getAlerts(): Collection
