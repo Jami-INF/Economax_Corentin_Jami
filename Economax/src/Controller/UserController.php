@@ -195,7 +195,7 @@ class UserController extends AbstractController
         $userConnected->setUsername("Anonymous");
         $userConnected->setEmail("anonymedUser@" . $userConnected->getId());
         $userConnected->setPassword("anonymedUser" . $userConnected->getId());
-        $userConnected->setImageName("anonymous.png");
+        $userConnected->setAvatar(null);
         $this->userRepository->save($userConnected);
         return $this->redirectToRoute('app_logout');
     }

@@ -65,10 +65,10 @@
         <div class="my-3">
             <span>Deal postée par {{ deal.user.username }}</span>
             <div class="text-decoration-none text-black float-end">
-                <a href="{{ path('app_deal_info', {id: deal.id}) }}">
+                <a class="text-decoration-none" href="{{ path('app_deal_info', {id: deal.id}) }}">
                     <button class="btn btn-primary">{{ deal.comments|length }}  <i class="bi bi-chat-left-text"></i></button>
                 </a>
-                <a href="{{ deal.link }}">
+                <a class="text-decoration-none" href="{{ deal.link }}">
                     <button class="btn btn-primary" href="{{ deal.link }}">Voir le deal  <i class="bi bi-box-arrow-up-right"></i></button>
                 </a>
             </div>
