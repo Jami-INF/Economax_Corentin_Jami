@@ -55,7 +55,7 @@ class PromoCodeType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'label' => 'Marchand',
-                'required' => false,
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control d-flex flex-wrap justify-content-between',
                 ],
