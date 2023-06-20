@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Advert;
 use App\Entity\Group;
+use App\Entity\Marchand;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,6 +42,17 @@ class AdvertType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'label' => 'Groupe de l\'annonce',
+                'attr' => [
+                    'class' => 'form-control d-flex flex-wrap justify-content-between',
+                ],
+            ])
+            ->add('marchand', EntityType::class, [
+                'class' => Marchand::class,
+                'choice_label' => 'name',
+                'expanded' => true,
+                'multiple' => false,
+                'label' => 'Marchand',
+                'required' => false,
                 'attr' => [
                     'class' => 'form-control d-flex flex-wrap justify-content-between',
                 ],

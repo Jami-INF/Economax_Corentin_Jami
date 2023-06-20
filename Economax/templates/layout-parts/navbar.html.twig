@@ -33,10 +33,15 @@
                 </li>
             {% endif %}
 
+
         </ul>
 
         <!-- Right elements -->
         <div class="navbar-nav ms-auto">
+            <form class="d-flex my-2" action="{{ path('app_search') }}" method="get">
+                <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
+                <input class="form-control" type="text" value="{{ app.request.get('search') }}" name="search" placeholder="Rechercher" aria-label="Search">
+            </form>
             {% if app.user %}
                 <li class="nav-item m-1 position-relative">
                     <a class="nav-link" href="{{ path('app_user_alerts', {id: app.user.id}) }}"><i class="bi bi-bell-fill fs-5"></i></a>

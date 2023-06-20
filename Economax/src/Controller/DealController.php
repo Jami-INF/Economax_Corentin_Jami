@@ -220,5 +220,4 @@ class DealController extends AbstractController
 
         return $this->redirectToRoute('app_home');
     }
-
 }

@@ -150,4 +150,15 @@ class DealRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getOneOrNullResult();
     }
+
+    public function findAllBySearch(float|bool|int|string|null $search)
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('d')
+            ->where('d.title LIKE :search')
+            ->orWhere('d.description LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+        ;
+        return $qb->getQuery()->getResult();
+    }
 }
