@@ -7,6 +7,7 @@ use App\Form\UserType;
 use App\Repository\DealRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,11 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
 
+    private Security $security;
+
     public function __construct(
         protected UserRepository $userRepository,
         protected DealRepository $dealRepository,
+        Security $security
+
     )
     {
+        $this->security = $security;
+
     }
     #[Route('/user/{id}/preview', name: 'app_user_preview')]
     public function preview(?User $user): Response
@@ -92,7 +99,7 @@ class UserController extends AbstractController
         //TODO: button to delete account and render anonymous user
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->userRepository->save($user);
         }
 
@@ -101,4 +108,21 @@ class UserController extends AbstractController
             'user' => $user,
         ]);
     }
+    /**
+     * AnonymizeUser
+     * #Route('/user/{id}/anonymize', name: 'app_user_anonymize')
+     */
+    #[Route('/user/{id}/anonymize', name: 'app_user_anonymize')]
+    public function anonymizeUser(?User $userConnected): Response
+    {
+        $userConnected->setUsername("Anonymous");
+        $userConnected->setEmail("anonymedUser@" . $userConnected->getId());
+        $userConnected->setPassword("anonymedUser" . $userConnected->getId());
+        $userConnected->setImageName("anonymous.png");
+        $this->userRepository->save($userConnected);
+        return $this->redirectToRoute('app_logout');
+    }
+
+
+
 }

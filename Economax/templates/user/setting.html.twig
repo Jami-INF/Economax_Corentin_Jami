@@ -35,7 +35,7 @@
 
                 {{ form_end(form) }}
 
-                <a href="#" class="btn btn-danger mt-3">Supprimer le compte</a>
+                <a href="{{ path('app_user_anonymize', {id:user.id}) }}" class="btn btn-danger">Supprimer mon compte</a>
             </div>
         </div>
 
