@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Group;
+use App\Entity\Marchand;
 use App\Entity\PromoCode;
 use App\Enum\TypeReducEnum;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -44,6 +45,17 @@ class PromoCodeType extends AbstractType
                 'expanded' => true,
                 'multiple' => false,
                 'label' => 'Groupe de l\'annonce',
+                'attr' => [
+                    'class' => 'form-control d-flex flex-wrap justify-content-between',
+                ],
+            ])
+            ->add('marchand', EntityType::class, [
+                'class' => Marchand::class,
+                'choice_label' => 'name',
+                'expanded' => true,
+                'multiple' => false,
+                'label' => 'Marchand',
+                'required' => true,
                 'attr' => [
                     'class' => 'form-control d-flex flex-wrap justify-content-between',
                 ],
