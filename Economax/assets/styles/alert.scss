@@ -1,0 +1,48 @@
+.alert {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  animation-name: swipe;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  z-index: 2;
+}
+
+.out {
+  position: absolute;
+  top: 2rem;
+  right: -100rem;
+  animation-name: swipe-out;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes swipe {
+  0% {
+    right: -100rem
+  }
+  20% {
+    right: 4rem;
+  }
+  30% {
+    right: 2rem;
+  }
+  100% {
+    right: 2rem;
+  }
+}
+
+@keyframes swipe-out {
+  0% {
+    right: 2rem
+  }
+  20% {
+    right: 4rem;
+  }
+  30% {
+    right: -100rem;
+  }
+  100% {
+    right: -100rem;
+  }
+}

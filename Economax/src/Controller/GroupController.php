@@ -61,6 +61,10 @@ class GroupController extends AbstractController
     public function delete(int $id): Response
     {
         $group = $this->groupRepository->find($id);
+        if($group->getDeals()->count() > 0) {
+            $this->addFlash('danger', 'Vous ne pouvez pas supprimer un groupe qui contient des deals');
+            return $this->redirectToRoute('app_group');
+        }
         $this->groupRepository->remove($group);
 
         return $this->redirectToRoute('app_group');
