@@ -9,6 +9,7 @@ use App\Form\UserType;
 use App\Repository\AlertRepository;
 use App\Repository\DealRepository;
 use App\Repository\UserRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -18,23 +19,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
-
-    private Security $security;
-
     public function __construct(
         protected UserRepository $userRepository,
         protected DealRepository $dealRepository,
         protected AlertRepository $alertRepository,
-        Security $security
-
     )
     {
-        $this->security = $security;
-
     }
     #[Route('/user/{id}/preview', name: 'app_user_preview')]
-    public function preview(?User $user): Response
+    public function preview(?User $user, ManagerRegistry $registry): Response
     {
+        $em = $registry->getManager();
+        $em->getFilters()->disable('soft_deleteable');
         // Stats
         if($user->getDeals()->count() > 0){
             $dealWithMostVote = $this->dealRepository->findMostVotedDealByUser($user);
