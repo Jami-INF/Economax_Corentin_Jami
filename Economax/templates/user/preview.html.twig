@@ -14,10 +14,10 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-2">
-                    {% if app.user.avatar == null %}
+                    {% if user.avatar == null %}
                         <img src="{{ asset('images/avatars/default-avatar.png') }}" class="rounded-circle" height="100" alt="Avatar" loading="lazy">
                     {% else %}
-                        <img src="{{ asset('images/avatars/' ~ app.user.avatar) }}" class="rounded-circle" height="100" alt="Avatar" loading="lazy"/>
+                        <img src="{{ asset('images/avatars/' ~ user.avatar) }}" class="rounded-circle" height="100" alt="Avatar" loading="lazy"/>
                     {% endif %}
                 </div>
                 <div class="col-10">
