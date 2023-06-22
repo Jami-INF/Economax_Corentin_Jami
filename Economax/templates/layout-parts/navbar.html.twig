@@ -33,18 +33,29 @@
                 </li>
             {% endif %}
 
+
         </ul>
 
         <!-- Right elements -->
         <div class="navbar-nav ms-auto">
+            <form class="d-flex my-2" action="{{ path('app_search') }}" method="get">
+                <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
+                <input class="form-control" type="text" value="{{ app.request.get('search') }}" name="search" placeholder="Rechercher" aria-label="Search">
+            </form>
             {% if app.user %}
+                <li class="nav-item m-1 position-relative">
+                    <a class="nav-link" href="{{ path('app_user_alerts', {id: app.user.id}) }}"><i class="bi bi-bell-fill fs-5"></i></a>
+                    {% if app.user.isNotify %}
+                        <span class="notification-dot"></span>
+                    {% endif %}
+                </li>
                 <!-- Avatar -->
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {% if app.user.imageName == null %}
+                        {% if app.user.avatar == null %}
                             <img src="{{ asset('images/avatars/default-avatar.png') }}" class="rounded-circle" height="35" alt="Avatar" loading="lazy">
                         {% else %}
-                            <img src="{{ asset('images/avatars/' ~ app.user.imageName) }}" class="rounded-circle" height="35" alt="Avatar" loading="lazy"/>
+                            <img src="{{ asset('images/avatars/' ~ app.user.avatar) }}" class="rounded-circle" height="35" alt="Avatar" loading="lazy"/>
                         {% endif %}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">

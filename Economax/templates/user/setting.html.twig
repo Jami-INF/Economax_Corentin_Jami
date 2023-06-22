@@ -12,8 +12,13 @@
                 {{ form_start(form) }}
                 <div class="mb-3">
                     <div class="d-flex align-items-center">
+                        {% if user.avatar %}
+                            <div class="me-3">
+                                <img src="{{ asset('images/avatars/' ~ user.avatar) }}" alt="Avatar" class="img-thumbnail mt-2" style="width: 200px">
+                            </div>
+                        {% endif %}
                         <div>
-                            {{ form_row(form.imageFile) }}
+                            {{ form_row(form.avatar) }}
                             <small class="form-text text-muted">Formats d'image acceptés : JPG, JPEG, PNG</small>
                         </div>
                     </div>
@@ -35,7 +40,7 @@
 
                 {{ form_end(form) }}
 
-                <a href="#" class="btn btn-danger mt-3">Supprimer le compte</a>
+                <a href="{{ path('app_user_anonymize', {id:user.id}) }}" class="btn btn-danger">Supprimer mon compte</a>
             </div>
         </div>
 

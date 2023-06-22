@@ -12,3 +12,17 @@ import './styles/app.scss';
 import './bootstrap';
 
 import 'bootstrap';
+
+const alert = document.querySelectorAll('.alert');
+
+if (alert) {
+    Array.from(alert).forEach(element => {
+        setTimeout(() => {
+            element.classList.add('out');
+
+            setTimeout(() => {
+                element.remove();
+            }, 1000);
+        }, 5000);
+    });
+}

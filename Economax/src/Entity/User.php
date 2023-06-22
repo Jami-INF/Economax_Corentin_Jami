@@ -53,14 +53,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[Vich\UploadableField(mapping: 'avatars', fileNameProperty: 'imageName')]
-    private ?File $imageFile = null;
+    #[ORM\Column(nullable: true)]
+    private ?string $avatar = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Alert::class)]
+    private Collection $alerts;
 
     #[ORM\Column(nullable: true)]
-    private ?string $imageName = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $updatedAt = null;
+    private ?bool $isNotify = null;
 
     #[ORM\ManyToMany(targetEntity: Deal::class, inversedBy: 'users')]
     private Collection $favorites;
@@ -70,6 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->comment = new ArrayCollection();
         $this->deals = new ArrayCollection();
         $this->temperatures = new ArrayCollection();
+        $this->alerts = new ArrayCollection();
         $this->favorites = new ArrayCollection();
     }
 
@@ -262,40 +263,56 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function setImageFile(?File $imageFile = null): void
+    public function setAvatar(?string $avatar): void
     {
-        $this->imageFile = $imageFile;
+        $this->avatar = $avatar;
+    }
 
-        if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @return Collection<int, Alert>
+     */
+    public function getAlerts(): Collection
+    {
+        return $this->alerts;
+    }
+
+    public function addAlert(Alert $alert): self
+    {
+        if (!$this->alerts->contains($alert)) {
+            $this->alerts->add($alert);
+            $alert->setUser($this);
         }
+
+        return $this;
     }
 
-    public function getImageFile(): ?File
+    public function removeAlert(Alert $alert): self
     {
-        return $this->imageFile;
+        if ($this->alerts->removeElement($alert)) {
+            // set the owning side to null (unless already changed)
+            if ($alert->getUser() === $this) {
+                $alert->setUser(null);
+            }
+        }
+
+        return $this;
     }
 
-    public function setImageName(?string $imageName): void
+    public function isIsNotify(): ?bool
     {
-        $this->imageName = $imageName;
+        return $this->isNotify;
     }
 
-    public function getImageName(): ?string
+    public function setIsNotify(?bool $isNotify): self
     {
-        return $this->imageName;
-    }
+        $this->isNotify = $isNotify;
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
+        return $this;
     }
 
     /**

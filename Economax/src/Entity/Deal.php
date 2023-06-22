@@ -72,6 +72,9 @@ class Deal
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
     private Collection $users;
 
+    #[ORM\ManyToOne(inversedBy: 'deals')]
+    private ?Marchand $marchand = null;
+
 
     public function __construct()
     {
@@ -293,6 +296,18 @@ class Deal
         if ($this->users->removeElement($user)) {
             $user->removeFavorite($this);
         }
+
+        return $this;
+    }
+
+    public function getMarchand(): ?Marchand
+    {
+        return $this->marchand;
+    }
+
+    public function setMarchand(?Marchand $marchand): self
+    {
+        $this->marchand = $marchand;
 
         return $this;
     }

@@ -38,4 +38,14 @@ class GroupRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findAllBySearch(float|bool|int|string|null $search)
+    {
+        $qb = $this->createQueryBuilder('g')
+            ->select('g')
+            ->where('g.name LIKE :search')
+            ->setParameter('search', '%' . $search . '%')
+        ;
+        return $qb->getQuery()->getResult();
+    }
 }

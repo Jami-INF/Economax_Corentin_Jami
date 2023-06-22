@@ -18,7 +18,7 @@ $(document).ready(function() {
         $.ajax({
             url: url,
             method: 'POST',
-            success: function (data) {
+            success: (data)=> {
                 $('#temp-' + dealId).text(data.temperature+"°");
             }
         });
@@ -37,7 +37,7 @@ $(document).ready(function() {
         $.ajax({
             url: url,
             method: 'POST',
-            success: function (data) {
+            success: (data)=> {
                 //console.log(data); // todo:popup
                 let iconElement = document.getElementById("favo-deal-" + dealId);
                 iconElement.classList.remove("bi-heart");
@@ -50,7 +50,7 @@ $(document).ready(function() {
         $.ajax({
             url: url,
             method: 'POST',
-            success: function (data) {
+            success:  (data)=> {
                 //console.log(data); // todo:popup
                 let iconElement = document.getElementById("favo-deal-" + dealId);
                 iconElement.classList.remove("bi-heart-fill");

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alertes{% endblock %}
+
+{% block header %}
+    {{ parent() }}
+    {%  include "layout-parts/navbar-user.html.twig" %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-2">
+        {% include 'layout-parts/alert-btn.html.twig' %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <p>Nouvelle alerte</p>
+                {{ form_start(form) }}
+                <div class="mb-3">
+                    {{ form_row(form.keyWord) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.temperature) }}
+                </div>
+                <div class="mb-3">
+                    {{ form_row(form.isNotify) }}
+                </div>
+                {{ form_rest(form) }}
+                <button type="submit" class="btn btn-primary">Créer une alerte</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <p>Mes alertes sauvegardés</p>
+                {% if alerts is empty %}
+                    <p>Vous n'avez pas d'alerte sauvegardé</p>
+                {% else %}
+                    {% for alert in alerts %}
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>{{ alert.keyWord }} - {{ alert.getTemperatureLabel }}</span>
+                            <a class="btn btn-danger" href="{{ path('app_user_alerts_remove', {id : app.user.id ,alert: alert.id}) }}">Supprimer</a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

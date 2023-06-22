@@ -87,14 +87,6 @@ class DealRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function findAllFavorite(User $user)
-    {
-        $qb = $this->createQueryBuilder('d')
-
-        ;
-        return $qb->getQuery()->getResult();
-    }
-
     public function findMostVotedDealByUser(?User $user) : Deal
     {
         $qb = $this->createQueryBuilder('d')
@@ -162,4 +154,14 @@ class DealRepository extends ServiceEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findAllBySearch(float|bool|int|string|null $search)
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('d')
+            ->where('d.title LIKE :search')
+            ->orWhere('d.description LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+        ;
+        return $qb->getQuery()->getResult();
+    }
 }

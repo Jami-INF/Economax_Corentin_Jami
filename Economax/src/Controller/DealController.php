@@ -10,6 +10,7 @@ use App\Repository\CommentRepository;
 use App\Repository\DealRepository;
 use App\Repository\TemperatureRepository;
 use App\Repository\UserRepository;
+use App\Service\AlertChecker;
 use App\Service\ReportDealMailer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -36,6 +37,7 @@ class DealController extends AbstractController
         protected TemperatureRepository $temperatureRepository,
         protected UserRepository $userRepository,
         protected ReportDealMailer $reportDealMailer,
+        protected AlertChecker $alertChecker,
         Security $security
     )
     {
@@ -106,6 +108,7 @@ class DealController extends AbstractController
             } else {
                 $this->promoCodeRepository->save($deal);
             }
+            $this->alertChecker->checkAlertsByDeal($deal);
 
             return $this->redirectToRoute('app_home');
         }
@@ -217,5 +220,4 @@ class DealController extends AbstractController
 
         return $this->redirectToRoute('app_home');
     }
-
 }

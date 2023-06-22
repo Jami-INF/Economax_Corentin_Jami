@@ -9,7 +9,15 @@
 
 {% block body %}
 
-    <div class="example-wrapper">
-        <h1>Alertes</h1>
+    <div class="container mt-2">
+        {% include 'layout-parts/alert-btn.html.twig' %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <p>Alertes</p>
+                {% for deal in deals %}
+                    {% include 'layout-parts/deal-card.html.twig' %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}

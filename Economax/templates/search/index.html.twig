@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Economax{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                {% if deals is empty %}
+                <div class="card my-4">
+                    <div class="card-body">
+                        <p class="">
+                            Il n'y a rien à afficher pour le moment :(
+                        </p>
+                    </div>
+                </div>
+                {% else %}
+                    {% for deal in deals %}
+                        {% include 'layout-parts/deal-card.html.twig' %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                <div class="card my-4">
+                    <p class="card-header">Les marchands</p>
+                    {% if marchands is empty %}
+                        <div class="card-body">
+                            <p class="card-text">Aucun marchand correspondant</p>
+                        </div>
+                    {% else %}
+                        <div class="card-body">
+                            {% for marchand in marchands %}
+                                <div class="row">
+                                    {# <div class="col-md-4">#}
+                                    {# <img src="{{ asset('uploads/marchand/' ~ marchand.logo) }}" alt="" class="img-fluid">#}
+                                    {# </div>#}
+                                    <div class="col-md-8">
+                                        <a class="text-decoration-none text-black" href="">{{ marchand.name }}</i>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+                </div>
+                <div class="card my-4">
+                    <p class="card-header">Les groupes</p>
+                    {% if marchands is empty %}
+                        <div class="card-body">
+                            <p class="card-text">Aucun groupe correspondant</p>
+                        </div>
+                    {% else %}
+                        <div class="card-body">
+                            {% for group in groups %}
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <a class="text-decoration-none text-black" href="{{ path("app_group_show", {id: group.id}) }}">{{ group.name }} <i class="bi bi-box-arrow-up-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('deal_action') }}
+{% endblock %}
