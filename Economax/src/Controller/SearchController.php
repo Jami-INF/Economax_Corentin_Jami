@@ -18,17 +18,15 @@ class SearchController extends AbstractController
         protected GroupRepository $groupRepository
     )
     {
-        $this->dealRepository = $dealRepository;
-        $this->marchandRepository = $marchandRepository;
-        $this->groupRepository = $groupRepository;
     }
     #[Route('/search', name: 'app_search')]
     public function index(Request $request): Response
     {
-        $search = $request->query->get('search'); // $_POST['q']
+        $search = $request->query->get('search');
         $deals = $this->dealRepository->findAllBySearch($search);
         $marchands = $this->marchandRepository->findAllBySearch($search);
         $groups = $this->groupRepository->findAllBySearch($search);
+        
         return $this->render('search/index.html.twig', [
             'deals' => $deals,
             'marchands' => $marchands,
