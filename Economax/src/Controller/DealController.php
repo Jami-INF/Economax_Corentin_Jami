@@ -217,6 +217,7 @@ class DealController extends AbstractController
     public function report(?Deal $deal): Response
     {
         $this->reportDealMailer->sendReport($deal);
+        $this->addFlash('success', 'Le deal a bien été signalé');
 
         return $this->redirectToRoute('app_home');
     }
