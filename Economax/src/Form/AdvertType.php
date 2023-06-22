@@ -7,6 +7,7 @@ use App\Entity\Group;
 use App\Entity\Marchand;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichFileType;
@@ -27,14 +28,17 @@ class AdvertType extends AbstractType
                 'label' => 'Titre de l\'annonce',
             ])
             ->add('description')
-            ->add('price', null, [
+            ->add('price', NumberType::class, [
                 'label' => 'Prix de l\'annonce',
+                'html5' => true,
             ])
             ->add('usualPrice', null, [
                 'label' => 'Prix habituel',
+                'html5' => true,
             ])
             ->add('shipping', null, [
                 'label' => 'Frais de port',
+                'html5' => true,
             ])
             ->add('groups', EntityType::class, [
                 'class' => Group::class,

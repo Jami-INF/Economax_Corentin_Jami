@@ -9,6 +9,7 @@ use App\Enum\TypeReducEnum;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -35,8 +36,9 @@ class PromoCodeType extends AbstractType
                 'choice_label' => 'getLabel',
                 'label' => 'Type de réduction',
             ])
-            ->add('value', null, [
+            ->add('value', NumberType::class, [
                     'label' => 'Valeur de la réduction',
+                    'html5' => true,
                 ]
             )
             ->add('groups', EntityType::class, [
