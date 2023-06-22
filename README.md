@@ -22,10 +22,15 @@ degrés).
 *  MySQL : Port `3310`
 
 ### Symfony
-* Installer les dépendances : `composer install``
+* Installer les dépendances : `composer install`
 * Créer la base de données : `php bin/console doctrine:database:create`
 * Mettre a jour le schéma de la base : `php bin/console doctrine:schema:update --force --complete`
+* Charger les fixtures : `php bin/console doctrine:fixtures:load`
 
 ### Node
 * Installer les dépendances : `npm install`
 * Compiler les assets : `npm run dev`
+
+### Les commandes
+* Créer un administrateur : `php bin/console app:create-admin`
+* Envoyer les emails contenant les alertes : `php bin/console app:send-email-alert`
