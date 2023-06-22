@@ -251,28 +251,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getTemperature(): ?Temperature
-    {
-        return $this->temperature;
-    }
-
-    public function setTemperature(?Temperature $temperature): self
-    {
-        // unset the owning side of the relation if necessary
-        if ($temperature === null && $this->temperature !== null) {
-            $this->temperature->setUser(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($temperature !== null && $temperature->getUser() !== $this) {
-            $temperature->setUser($this);
-        }
-
-        $this->temperature = $temperature;
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;

@@ -143,6 +143,17 @@ class DealRepository extends ServiceEntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
+    public function findAllDealsFromWeek()
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->select('d')
+            ->where('d.createdAt > :date')
+            ->setParameter('date', new \DateTime('-1 week'))
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findAllBySearch(float|bool|int|string|null $search)
     {
         $qb = $this->createQueryBuilder('d')
