@@ -68,7 +68,14 @@
                     {{ deal.user.username }}
                 </a>
             </span>
-            <div class="text-decoration-none text-black float-end">
+            <div class="text-decoration-none text-black float-end d-flex justify-content-between gap-2">
+                {% if deal.type == 'PromoCode' %}
+                    <div>
+                        <div class="input-group">
+                            <input class="form-control text-center" value="{{ deal.promoCode }}" disabled>
+                        </div>
+                    </div>
+                {% endif %}
                 <a class="text-decoration-none" href="{{ path('app_deal_info', {id: deal.id}) }}">
                     <button class="btn btn-primary">{{ deal.comments|length }}  <i class="bi bi-chat-left-text"></i></button>
                 </a>
