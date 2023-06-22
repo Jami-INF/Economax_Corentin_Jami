@@ -9,11 +9,29 @@
 
 {% block body %}
 
-<div class="container mt-2">
+<div class="container my-4">
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-2">
+                    {% if app.user.avatar == null %}
+                        <img src="{{ asset('images/avatars/default-avatar.png') }}" class="rounded-circle" height="100" alt="Avatar" loading="lazy">
+                    {% else %}
+                        <img src="{{ asset('images/avatars/' ~ app.user.avatar) }}" class="rounded-circle" height="100" alt="Avatar" loading="lazy"/>
+                    {% endif %}
+                </div>
+                <div class="col-10">
+                    <h2>{{ user.username }}</h2>
+                    <p>{{ user.email }}</p>
+                    <p>{{ user.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <div class="card-body">
-            <h2>Statistiques <i class="bi bi-bar-chart"></i></h2>
 
+            <h2>Statistiques <i class="bi bi-bar-chart"></i></h2>
             <p>Nombre de deals postés : {{ user.deals|length }}</p>
             <p>Nombre de commentaires postés : {{ user.comment|length }}</p>
             <p>Note du deal posté le plus hot : {{ vote }} </p>

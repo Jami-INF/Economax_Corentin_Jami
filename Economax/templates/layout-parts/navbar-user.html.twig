@@ -1,17 +1,17 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="collapse navbar-collapse" id="navbarColor01">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item active mx-2">
                 <a class="nav-link" href="{{ path('app_user_preview', {id : app.user.id}) }}">Aperçu</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_user_deals', {id : app.user.id}) }}">Deal ({{ app.user.deals|length }})</a>
+            <li class="nav-item mx-2">
+                <a class="nav-link" href="{{ path('app_user_deals', {id : app.user.id}) }}">Mes deals ({{ app.user.deals|length }})</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_user_deals_saved', {id : app.user.id}) }}">Deal sauvegardé ({{ app.user.favorites|length }})</a>
+            <li class="nav-item mx-2">
+                <a class="nav-link" href="{{ path('app_user_deals_saved', {id : app.user.id}) }}">Mes deals sauvegardé ({{ app.user.favorites|length }})</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_user_alerts', {id : app.user.id}) }}">Alertes</a>
+            <li class="nav-item mx-2">
+                <a class="nav-link" href="{{ path('app_user_alerts', {id : app.user.id}) }}">Mes alertes</a>
             </li>
         </ul>
     </div>

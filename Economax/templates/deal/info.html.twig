@@ -30,7 +30,7 @@
                                     <i class="bi bi-heart favorite-{{ deal.id }}" id="favo-deal-{{ deal.id }}"></i>
                                 {% endif %}
                             </a>
-                            <span class="float-end">{{ deal.comments|length }}  <i class="bi bi-chat-left-text"></i> <i class="bi bi-clock"></i> - Le {{ deal.createdAt|date('d M Y') }}</span>
+                            <span class="float-end">{{ deal.comments|length }}  <i class="bi bi-chat-left-text"></i>   Le {{ deal.createdAt|date('d M Y') }} <i class="bi bi-clock"></i> </span>
                         </div>
 
                         <div class="my-3">
@@ -69,7 +69,9 @@
 
                 </div>
                 <div class="float-end">
-                    <span class="">Deal postée par {{ deal.user.username }}</span>
+                    <span class="">Deal postée par <a href="{{ path('app_user_preview', {id: deal.user.id}) }}" class="text-decoration-none">
+                    {{ deal.user.username }}
+                </a></span>
 
                 </div>
 
@@ -80,12 +82,13 @@
                 <h3>À propos de ce deal</h3>
 
                 <p class="card-text my-4">{{ deal.description }}</p>
-                {% if app.user == deal.user %}
-                    <a href="{{ path('app_deal_delete', {id: deal.id}) }}" class="btn btn-danger">Expiré ?</a>
-                {% endif %}
+
             </div>
             <div class="card-footer">
-                <a href="{{ path('app_deal_report', {id: deal.id}) }}" class="text-decoration-none text-dark"><i class="bi bi-flag"></i> Signalez</a>
+                {% if app.user == deal.user %}
+                    <a href="{{ path('app_deal_delete', {id: deal.id}) }}" class="text-decoration-none text-dark mx-2"><i class="bi bi-clock-history"></i> Expiré ?</a>
+                {% endif %}
+                <a href="{{ path('app_deal_report', {id: deal.id}) }}" class="text-decoration-none text-dark mx-2"><i class="bi bi-flag"></i> Signalez</a>
             </div>
         </div>
         <div class="card my-2">
