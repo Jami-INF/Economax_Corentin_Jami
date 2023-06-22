@@ -22,6 +22,7 @@ degrés).
 *  MySQL : Port `3310`
 
 ### Symfony
+* Aller dans le dossier du projet : `cd Economax`
 * Installer les dépendances : `composer install`
 * Créer la base de données : `php bin/console doctrine:database:create`
 * Mettre a jour le schéma de la base : `php bin/console doctrine:schema:update --force --complete`
