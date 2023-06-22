@@ -149,10 +149,11 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/{id}/settings', name: 'app_user_settings')]
-    public function settings(?User $user, Request $request): Response
+    #[Route('/user/settings', name: 'app_user_settings')]
+    public function settings(Request $request): Response
     {
-        //TODO: button to delete account and render anonymous user
+        $user = $this->getUser();
+
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
