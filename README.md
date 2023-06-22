@@ -32,6 +32,8 @@ degrés).
 * Installer les dépendances : `npm install`
 * Compiler les assets : `npm run dev`
 
+* Lancer le serveur php : `php -S localhost:8080 -t public/`
+
 ### Les commandes
 * Créer un administrateur : `php bin/console app:create-admin`
 * Envoyer les emails contenant les alertes : `php bin/console app:send-email-alert`
